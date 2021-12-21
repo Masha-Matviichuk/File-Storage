@@ -5,9 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Interfaces" />
-      <Folder Include="Repositories" />
-      <Folder Include="UoW" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     </ItemGroup>
 
 </Project>
