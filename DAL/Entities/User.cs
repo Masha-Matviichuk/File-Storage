@@ -7,5 +7,7 @@ namespace DAL.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public virtual ICollection<File> Files { get; set; }
+
+        public virtual UserProfile UserProfile { get; set; }
     }
 }
