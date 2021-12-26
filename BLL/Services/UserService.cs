@@ -19,25 +19,25 @@ namespace BLL.Services
             _autoMapper = autoMapper;
         }
 
-        public async Task<IEnumerable<UserInfoModel>> GetAllAsync()
+        public async Task<IEnumerable<UserInfoDto>> GetAllAsync()
         {
             var entities = await _unitOfWork.UserRepository.GetAllAsync();
-            return _autoMapper.Map<IEnumerable<UserInfoModel>>(entities);
+            return _autoMapper.Map<IEnumerable<UserInfoDto>>(entities);
         }
 
-        public async Task<UserInfoModel> GetByIdAsync(int id)
+        public async Task<UserInfoDto> GetByIdAsync(int id)
         {
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
-            return _autoMapper.Map<UserInfoModel>(entity);
+            return _autoMapper.Map<UserInfoDto>(entity);
         }
 
-        public async Task AddAsync(UserInfoModel model)
+        public async Task AddAsync(UserInfoDto model)
         { 
             var entity = _autoMapper.Map<User>(model);
             await _unitOfWork.UserRepository.CreateAsync(entity);
         }
 
-        public async Task UpdateAsync(UserInfoModel model)
+        public async Task UpdateAsync(UserInfoDto model)
         {
             var entity = _autoMapper.Map<User>(model);
             await _unitOfWork.UserRepository.UpdateAsync(entity);
@@ -45,7 +45,7 @@ namespace BLL.Services
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _unitOfWork.UserRepository.DeleteByIdTask(id);
+            await _unitOfWork.UserRepository.DeleteByIdAsync(id);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace DAL.Interfaces
     {
         IFileRepository FileRepository { get;  }
         IUserRepository UserRepository { get; }
+        IFileStorageRepository FileStorageRepository { get; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

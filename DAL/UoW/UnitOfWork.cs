@@ -9,6 +9,7 @@ namespace DAL.UoW
         private readonly FileStorageDBContext _context;
         private IFileRepository _fileRepository;
         private IUserRepository _userRepository;
+        private IFileStorageRepository _storage;
 
         public UnitOfWork(FileStorageDBContext context)
         {
@@ -25,6 +26,19 @@ namespace DAL.UoW
                 }
 
                 return _fileRepository;
+            }
+        }
+
+        public IFileStorageRepository FileStorageRepository
+        {
+            get
+            {
+                if (_storage==null)
+                {
+                    _storage = new FileStorageRepository();
+                }
+
+                return _storage;
             }
         }
 

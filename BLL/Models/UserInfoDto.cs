@@ -2,7 +2,7 @@
 
 namespace BLL.Models
 {
-    public class UserInfoModel : BaseEntityModel
+    public class UserInfoDto : BaseEntityDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

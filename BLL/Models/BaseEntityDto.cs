@@ -1,6 +1,6 @@
 ﻿namespace BLL.Models
 {
-    public class BaseEntityModel
+    public class BaseEntityDto
     {
         public int Id { get; set; }
     }

@@ -9,8 +9,8 @@ namespace BLL.Configuration
     {
         public AutoMapperProfile()
         {
-            CreateMap<File, FileModel>().ReverseMap();
-            CreateMap<User, UserInfoModel>()
+            CreateMap<DAL.Entities.File, FileDto>().ReverseMap();
+            CreateMap<User, UserInfoDto>()
                 .ForMember(u => u.Id, m => m.MapFrom(user => user.Id))
                 .ForMember(u=>u.FirstName, m=>m.MapFrom(user=>user.FirstName))
                 .ForMember(u=>u.LastName, m=>m.MapFrom(user=>user.LastName))
@@ -19,7 +19,7 @@ namespace BLL.Configuration
                 .ForMember(u=>u.Address, m=>m.MapFrom(user=>user.UserProfile.Address))
                 .ForMember(u=>u.FileIds, m=>m.MapFrom(user=>user.Files.Select(x=>x.Id)))
                 .ReverseMap();
-            CreateMap<UserProfile, UserInfoModel>().ReverseMap();
+            CreateMap<UserProfile, UserInfoDto>().ReverseMap();
         }
     }
 }

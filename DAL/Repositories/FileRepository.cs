@@ -67,7 +67,7 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public async Task DeleteByIdTask(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var entity = await _context.Files.FindAsync(id);
             _context.Files.Remove(entity);
