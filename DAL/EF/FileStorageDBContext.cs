@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.EF
 {
-    public class FileStorageDBContext :  IdentityDbContext, IFileStorageDBContext
+    public class FileStorageDBContext :  IdentityDbContext<UserProfile>, IFileStorageDBContext
     {
         
         public FileStorageDBContext(DbContextOptions<FileStorageDBContext> options) : base(options)

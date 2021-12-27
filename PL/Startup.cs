@@ -5,6 +5,7 @@ using System.Text;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.EF;
+using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DAL.UoW;
@@ -66,10 +67,10 @@ namespace PL
             services.AddDbContext<FileStorageDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FileStorageDB")));
 
-            /*services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
-                options.Password.RequiredLength = 5;
-            }).AddEntityFrameworkStores<AdministrationDbContext>();*/
+                options.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<FileStorageDBContext>();
 
             /*services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
