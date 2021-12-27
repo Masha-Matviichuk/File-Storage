@@ -60,7 +60,7 @@ namespace BLL.Services
                  file.Size = _unitOfWork.FileStorageRepository.GetInfo(path).Length;
             }
 
-            file.Access = model.AccessToFile;
+            file.AccessId = model.AccessId;
             file.Description = model.Description;
             file.Title = model.Title;
 

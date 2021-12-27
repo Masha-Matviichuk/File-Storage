@@ -14,12 +14,11 @@ namespace BLL.Configuration
                 .ForMember(u => u.Id, m => m.MapFrom(user => user.Id))
                 .ForMember(u=>u.FirstName, m=>m.MapFrom(user=>user.FirstName))
                 .ForMember(u=>u.LastName, m=>m.MapFrom(user=>user.LastName))
-                .ForMember(u=>u.Email, m=>m.MapFrom(user=>user.UserProfile.Email))
-                .ForMember(u=>u.Phone, m=>m.MapFrom(user=>user.UserProfile.Phone))
-                .ForMember(u=>u.Address, m=>m.MapFrom(user=>user.UserProfile.Address))
+                .ForMember(u=>u.Email, m=>m.MapFrom(user=>user.Email))
+                .ForMember(u=>u.Phone, m=>m.MapFrom(user=>user.Phone))
                 .ForMember(u=>u.FileIds, m=>m.MapFrom(user=>user.Files.Select(x=>x.Id)))
                 .ReverseMap();
-            CreateMap<UserProfile, UserInfoDto>().ReverseMap();
+            
         }
     }
 }

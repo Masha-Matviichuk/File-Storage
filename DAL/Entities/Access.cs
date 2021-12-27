@@ -1,8 +1,10 @@
-﻿namespace DAL.Entities
+﻿using System.Collections.Generic;
+
+namespace DAL.Entities
 {
     public class Access : BaseEntity
     {
         public string Modifier { get; set; }
-        public virtual File File { get; set; }
+        public virtual ICollection<File> Files { get; set; }
     }
 }

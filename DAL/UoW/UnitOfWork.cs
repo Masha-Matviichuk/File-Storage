@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DAL.EF;
 using DAL.Interfaces;
 using DAL.Repositories;
 
