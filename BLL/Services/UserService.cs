@@ -31,11 +31,11 @@ namespace BLL.Services
             return _autoMapper.Map<UserInfoDto>(entity);
         }
 
-        public async Task AddAsync(UserInfoDto model)
+        /*public async Task AddAsync(UserInfoDto model)
         { 
             var entity = _autoMapper.Map<User>(model);
             await _unitOfWork.UserRepository.CreateAsync(entity);
-        }
+        }*/
 
         public async Task UpdateAsync(UserInfoDto model)
         {
@@ -43,6 +43,7 @@ namespace BLL.Services
             await _unitOfWork.UserRepository.UpdateAsync(entity);
         }
 
+        //Add Delete for Profile, if i need it 
         public async Task DeleteByIdAsync(int id)
         {
             await _unitOfWork.UserRepository.DeleteByIdAsync(id);

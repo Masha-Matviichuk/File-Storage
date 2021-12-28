@@ -58,9 +58,11 @@ namespace PL
             services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IFileStorageDBContext, FileStorageDBContext>();
             
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
             
             //services.AddDbContext<FileStorageDBContext>();
 
@@ -72,7 +74,7 @@ namespace PL
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<FileStorageDBContext>();
 
-            /*services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -98,7 +100,7 @@ namespace PL
                         ClockSkew = TimeSpan.Zero
                     };
                 });
-                */
+                
 
            // services.AddControllers(options => { options.Filters.Add<CustomExceptionFilterAttribute>(); });
 

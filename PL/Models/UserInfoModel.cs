@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace BLL.Models
+namespace PL.Models
 {
-    public class UserInfoDto : BaseEntityDto
+    public class UserInfoModel
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
