@@ -9,16 +9,17 @@ using BLL.Interfaces;
 using BLL.Models;
 using DAL.Entities;
 using DAL.Interfaces;
+using File = DAL.Entities.File;
 
 namespace BLL.Services
 {
     public class FileService : IFileService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Mapper _autoMapper;
+        private readonly IMapper _autoMapper;
         
 
-        public FileService(IUnitOfWork unitOfWork, Mapper autoMapper)
+        public FileService(IUnitOfWork unitOfWork, IMapper autoMapper)
         {
             _unitOfWork = unitOfWork;
             _autoMapper = autoMapper;
@@ -36,7 +37,7 @@ namespace BLL.Services
         }
 
 
-        public async Task AddAsync(Stream fileStream, FileDto model)
+        public async Task<File> AddAsync(Stream fileStream, FileDto model)
         {
             var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title);
 
@@ -45,11 +46,12 @@ namespace BLL.Services
             file.Size = _unitOfWork.FileStorageRepository.GetInfo(path).Length;
             file.Upload = DateTime.Now;
 
-            await _unitOfWork.FileRepository.CreateAsync(file);
+            var result =await _unitOfWork.FileRepository.CreateAsync(file);
             await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
-        public async Task UpdateAsync(Stream fileStream, FileDto model)
+        public async Task<File> UpdateAsync(Stream fileStream, FileDto model)
         {
             var file = await _unitOfWork.FileRepository.GetByIdAsync(model.Id);
             if (fileStream != null)
@@ -64,8 +66,9 @@ namespace BLL.Services
             file.Description = model.Description;
             file.Title = model.Title;
 
-            await _unitOfWork.FileRepository.UpdateAsync(file);
+           var newFile = await _unitOfWork.FileRepository.UpdateAsync(file);
             await _unitOfWork.SaveChangesAsync();
+            return newFile;
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -76,10 +79,10 @@ namespace BLL.Services
              await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<Stream> ReadFileAsync(FileDto model)
+        public async Task<byte[]> ReadFileAsync(FileDto model)
         {
             var file = await _unitOfWork.FileRepository.GetByIdAsync(model.Id);
-            return _unitOfWork.FileStorageRepository.Read(file.Url);
+            return await _unitOfWork.FileStorageRepository.ReadAsync(file.Url);
         }
 
         public IEnumerable<FileDto> GetByKeyword(string keyword)

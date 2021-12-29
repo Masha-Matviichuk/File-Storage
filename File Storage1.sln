@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{2392B67A-137D-450C-80C3-4F1FF5115F93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth", "Auth\Auth.csproj", "{33C4F05C-20CA-4B34-B99E-CA30F06BE8FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{2392B67A-137D-450C-80C3-4F1FF5115F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2392B67A-137D-450C-80C3-4F1FF5115F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2392B67A-137D-450C-80C3-4F1FF5115F93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C4F05C-20CA-4B34-B99E-CA30F06BE8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C4F05C-20CA-4B34-B99E-CA30F06BE8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C4F05C-20CA-4B34-B99E-CA30F06BE8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C4F05C-20CA-4B34-B99E-CA30F06BE8FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

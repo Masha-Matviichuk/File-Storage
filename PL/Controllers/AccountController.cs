@@ -16,11 +16,11 @@ namespace PL.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
         private readonly IAccountService _accountService;
         private readonly IOptionsSnapshot<JwtSettings> _optionsSnapshot;
 
-        public AccountController(Mapper mapper, IAccountService accountService, IOptionsSnapshot<JwtSettings> optionsSnapshot)
+        public AccountController(IMapper mapper, IAccountService accountService, IOptionsSnapshot<JwtSettings> optionsSnapshot)
         {
             _mapper = mapper;
             _accountService = accountService;

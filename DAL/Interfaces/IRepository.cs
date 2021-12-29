@@ -12,9 +12,9 @@ namespace DAL.Interfaces
         TEntity GetById(int id);
         Task<TEntity> GetByIdAsync(int id);
         void Create(TEntity entity);
-        Task CreateAsync(TEntity entity);
+        Task<TEntity> CreateAsync(TEntity entity);
         void Update(TEntity entity);
-        Task UpdateAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
         void Delete(int id);
         Task DeleteByIdAsync(int id);
     }

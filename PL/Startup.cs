@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Auth;
+using BLL.Configuration;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.EF;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PL.Configuration;
 using PL.Helpers;
 
 namespace PL
@@ -68,11 +70,17 @@ namespace PL
 
             services.AddDbContext<FileStorageDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FileStorageDB")));
+            
+            services.AddDbContext<AdministrationDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AdministrationDB")));
+            
+            services.AddAutoMapper(typeof(AutoMapperProfileForBLL));
+            services.AddAutoMapper(typeof(AutoMapperProfileForPL));
 
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<UserProfile, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 8;
-            }).AddEntityFrameworkStores<FileStorageDBContext>();
+            }).AddEntityFrameworkStores<AdministrationDBContext>();
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 

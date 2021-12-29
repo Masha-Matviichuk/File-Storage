@@ -51,9 +51,9 @@ namespace DAL.Repositories
             return filePath;
         }
 
-        public Stream Read(string filepath)
+        public async Task<byte[]> ReadAsync(string filepath)
         {
-            return File.OpenRead(filepath);
+            return await File.ReadAllBytesAsync(filepath);
         }
 
         public FileInfo GetInfo(string filepath)

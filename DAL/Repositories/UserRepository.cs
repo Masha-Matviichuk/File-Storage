@@ -43,10 +43,11 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public async Task CreateAsync(User entity)
+        public async Task<User> CreateAsync(User entity)
         {
-           await _context.Users.AddAsync(entity);
+           var user = await _context.Users.AddAsync(entity);
            await _context.SaveChangesAsync();
+           return user.Entity;
         }
 
         public void Update(User entity)
@@ -55,10 +56,11 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public async Task UpdateAsync(User entity)
+        public async Task<User> UpdateAsync(User entity)
         {
-             _context.Users.Attach(entity);
+             var newUser =_context.Users.Attach(entity);
              await _context.SaveChangesAsync();
+             return newUser.Entity;
         }
 
         public void Delete(int id)

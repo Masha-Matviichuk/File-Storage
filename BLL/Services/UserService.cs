@@ -11,9 +11,9 @@ namespace BLL.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly Mapper _autoMapper;
+        private readonly IMapper _autoMapper;
 
-        public UserService(IUnitOfWork unitOfWork, Mapper autoMapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper autoMapper)
         {
             _unitOfWork = unitOfWork;
             _autoMapper = autoMapper;

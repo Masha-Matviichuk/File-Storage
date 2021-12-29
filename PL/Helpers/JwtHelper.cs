@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Auth;
 using DAL.Entities;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,14 +12,14 @@ namespace PL.Helpers
 {
     public static class JwtHelper
     {
-        public static string GenerateJwt(User user, IEnumerable<string> roles, JwtSettings jwtSettings)
+        public static string GenerateJwt(UserProfile user, IEnumerable<string> roles, JwtSettings jwtSettings)
         {
             if (user is null) throw new Exception($"Jwt generation not proceeded - {nameof(user)} is null");
 
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserProfile.UserName),
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };

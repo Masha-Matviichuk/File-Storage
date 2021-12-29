@@ -13,9 +13,9 @@ namespace DAL.EF
            
         }
 
-        /*public FileStorageDBContext()
+        public FileStorageDBContext()
         {
-        }*/
+        }
 
         public DbSet<File> Files { get; set; }
         public DbSet<User> Users { get; set; }
@@ -23,19 +23,20 @@ namespace DAL.EF
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-            builder.Entity<IdentityRole>().HasData(new[]
-            {
-                new IdentityRole("user"),
-                new IdentityRole("admin")
-            });
+            //builder.Ignore<UserProfile>();
+            //base.OnModelCreating(builder);
+            // builder.Entity<IdentityRole>().HasData(new[]
+            // {
+            //     new IdentityRole("user"),
+            //      new IdentityRole("admin")
+            //  });
             //builder.Entity<File>()
-               // .HasKey(x => new { x.BookId, x.CardId });
+            // .HasKey(x => new { x.BookId, x.CardId });
         }
 
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.;Database=FileStorageDB;Trusted_Connection=True;");
-        }*/
+        }
     }
 }

@@ -43,22 +43,24 @@ namespace DAL.Repositories
             _context.SaveChanges();
         }
 
-        public async Task CreateAsync(File entity)
+        public async Task<File> CreateAsync(File entity)
         { 
-            await _context.Files.AddAsync(entity);
+           var file = await _context.Files.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return file.Entity;
         }
 
         public void Update(File entity)
         {
-            _context.Files.Attach(entity);
+           var newFile = _context.Files.Attach(entity);
             _context.SaveChanges();
         }
 
-        public async Task UpdateAsync(File entity)
+        public async Task<File> UpdateAsync(File entity)
         {
-             _context.Files.Attach(entity);
+             var newFile =_context.Files.Attach(entity);
              await _context.SaveChangesAsync();
+             return newFile.Entity;
         }
 
         public void Delete(int id)

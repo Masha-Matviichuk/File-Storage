@@ -5,7 +5,7 @@ using DAL.Repositories;
 
 namespace DAL.UoW
 {
-    public abstract class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly FileStorageDBContext _context;
         private IFileRepository _fileRepository;
