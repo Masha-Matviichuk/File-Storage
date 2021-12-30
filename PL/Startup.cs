@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Auth;
 using BLL.Configuration;
@@ -138,6 +139,7 @@ namespace PL
                         }
                     };
                 c.AddSecurityRequirement(security);
+              
             });
         }
 

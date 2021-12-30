@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Auth;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using File = DAL.Entities.File;
 
 namespace BLL.Services
@@ -17,12 +19,14 @@ namespace BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _autoMapper;
-        
+        private readonly UserManager<UserProfile> _userManager;
 
-        public FileService(IUnitOfWork unitOfWork, IMapper autoMapper)
+
+        public FileService(IUnitOfWork unitOfWork, IMapper autoMapper, UserManager<UserProfile> userManager)
         {
             _unitOfWork = unitOfWork;
             _autoMapper = autoMapper;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<FileDto>> GetAllAsync()
         {
@@ -36,15 +40,18 @@ namespace BLL.Services
             return _autoMapper.Map<FileDto>(entity);
         }
 
-
+     //Maybe Equals better replace with ==
         public async Task<File> AddAsync(Stream fileStream, FileDto model)
         {
             var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title);
+            var userEmail =  _userManager.GetUserName(model.CurrentUser);
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
 
             var file = _autoMapper.Map<DAL.Entities.File>(model);
             file.Url = path;
             file.Size = _unitOfWork.FileStorageRepository.GetInfo(path).Length;
             file.Upload = DateTime.Now;
+            file.UserId = users.FirstOrDefault(u => u.Email == userEmail).Id;    
 
             var result =await _unitOfWork.FileRepository.CreateAsync(file);
             await _unitOfWork.SaveChangesAsync();

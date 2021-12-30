@@ -20,7 +20,6 @@ namespace PL.Configuration
                 .ForMember(u => u.PhoneNumber, m => m.MapFrom(user => user.PhoneNumber))
                 .ForMember(u => u.Password, m => m.MapFrom(user => user.Password))
                 .ForMember(u => u.Email, m => m.MapFrom(user => user.UserName))
-                .ForMember(u => u.NickName, m => m.MapFrom(user => user.NickName))
                 .ReverseMap();
             CreateMap<LogIn, LogInModel>().ReverseMap();
             

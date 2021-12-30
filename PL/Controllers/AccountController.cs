@@ -27,8 +27,8 @@ namespace PL.Controllers
             _optionsSnapshot = optionsSnapshot;
         }
         
-        // POST api/Account/SignUp
-        [HttpPost("SignUp")]
+        // POST api/Account/signUp
+        [HttpPost("signUp")]
         public async Task<IActionResult> Register([FromForm]SignUpModel model)
         {
             if (model.Password!=model.PasswordConfirm)
@@ -42,8 +42,9 @@ namespace PL.Controllers
             return Created(string.Empty, string.Empty);
         }
         
-        [HttpPost("LogIn")]
-        public async Task<IActionResult> Logon(LogInModel model)
+        // POST api/Account/logIn
+        [HttpPost("logIn")]
+        public async Task<IActionResult> LogIn(LogInModel model)
         {
             var userData = _mapper.Map<LogIn>(model);
             var user = await _accountService.LogIn(userData);
@@ -64,33 +65,6 @@ namespace PL.Controllers
         }*/
         
         //it`s another controller maybe
-        // POST api/Account/SignUp
-        [HttpPost("CreateRole")]
-        public async Task<IActionResult> CreateRole(CreateRoleModel model)
-        {
-            await _accountService.CreateRole(model.RoleName);
-            return Ok();
-        }
-
-        [HttpGet("getRoles")]
-        public async Task<IActionResult> GetRoles()
-        {
-            return Ok(await _accountService.GetRoles());
-        }
-
-        [HttpPost("assignUserToRole")]
-        public async Task<IActionResult> AssignUserToRole(AssignUserToRolesModel model)
-        {
-            await _accountService.AssignUserToRoles(new AssignUserToRoles
-            {
-                Email = model.Email,
-                Roles = model.Roles
-            });
-
-            return Ok();
-        }
-
-
-
+        
     }
 }

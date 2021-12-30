@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using DAL.Entities;
 
 
@@ -8,11 +9,12 @@ namespace BLL.Models
     {
         public string Title { get; set; }
         public string Url { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public string Description { get; set; }
         public int AccessId { get; set; }
         public DateTime Upload { get; set; }
         public long Size { get; set; }
+        public ClaimsPrincipal CurrentUser { get; set; }
         public User User { get; set; }
         public Access Access { get; set; }
     }

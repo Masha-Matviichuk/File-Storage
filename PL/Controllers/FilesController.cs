@@ -3,10 +3,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Auth;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
 using BLL.Models.Account;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
@@ -19,19 +23,23 @@ namespace PL.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FileController : ControllerBase
+    
+    public class FilesController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
-      
+        
 
-        public FileController(IMapper mapper, IFileService filetService)
+
+        public FilesController(IMapper mapper, IFileService filetService)
         {
             _mapper = mapper;
             _fileService = filetService;
         }
         
-        [HttpGet("files")]
+        // GET api/Files
+        [Authorize (Roles = "admin")]
+        [HttpGet]
         public async Task<IActionResult> GetAllFiles()
         {
             var files = await _fileService.GetAllAsync();
@@ -39,7 +47,9 @@ namespace PL.Controllers
             return Ok(files);
         }
         
-        [HttpGet("file/{id:int}")]
+        // GET api/Files/5
+        [Authorize (Roles = "admin, user")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetFileById(int id)
         {
             var file = await _fileService.GetByIdAsync(id);
@@ -47,6 +57,8 @@ namespace PL.Controllers
             return Ok(file);
         }
         
+        // GET api/Files/fileSearch/word
+        [Authorize (Roles = "admin")]
         [HttpGet("filesSearch/{keyword}")]
         public IActionResult GetFilesByKeyword(string keyword)
         {
@@ -55,18 +67,26 @@ namespace PL.Controllers
             return Ok(files);
         }
         
+        
+        // POST api/Files/upload
+        [Authorize(Roles = "user, admin")]
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile([FromForm] CreateFileModel model)
+        [FileUploadOperation.FileContentType]
+        public async Task<IActionResult> UploadFile([FromForm] CreateFileModel model, IFormFile uploadedFile)
         {
+            
+            var file = uploadedFile.OpenReadStream();
             var fileInfo = _mapper.Map<FileDto>(model);
-            var result = await Request.ReadFormAsync();
-            var file = result.Files[0].OpenReadStream();
+            fileInfo.CurrentUser = User;
+            /*var result = await Request.ReadFormAsync();
+            var file = result.Files[0].OpenReadStream();*/
             var createdFile = await _fileService.AddAsync(file, fileInfo);
            
             return Created(fileInfo.Title, createdFile.Url);
         }
         
-        [HttpPost("download/{id:int}")]
+        // GET api/Files/download/4
+        [HttpGet("download/{id:int}")]
         public async Task<IActionResult> DownloadFile( int id)
         {
 
@@ -80,18 +100,22 @@ namespace PL.Controllers
             }
             
             var data = await _fileService.ReadFileAsync(file);
-            
+
             return File(data, contentType, Path.GetFileName(file.Url));
-           
+          
         }
         
+        //!!!!!!!!!!!!!!!!!!!!!!!!
+        // PUT api/Files/edit
+        [Authorize (Roles = "admin, user")]
         [HttpPut("edit")]
-        public async Task<IActionResult> EditFile( CreateFileModel model)
+        public async Task<IActionResult> EditFile( CreateFileModel model, IFormFile uploadedFile)
         {
+            var file = uploadedFile.OpenReadStream();
 
             var fileInfo = _mapper.Map<FileDto>(model);
-            var result = await Request.ReadFormAsync();
-            var file = result.Files[0].OpenReadStream();
+            /*var result = await Request.ReadFormAsync();
+            var file = result.Files[0].OpenReadStream();*/
             
             
             var data = await _fileService.UpdateAsync(file, fileInfo);
@@ -100,6 +124,8 @@ namespace PL.Controllers
 
         }
         
+        // DELETE api/Files/delete/5
+        [Authorize (Roles = "user, admin")]
         [HttpDelete("delete/{id:int}")]
         public async Task<IActionResult> DeleteFile( int id)
         {

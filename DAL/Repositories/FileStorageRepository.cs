@@ -32,7 +32,13 @@ namespace DAL.Repositories
         public async Task<string> CreateAsync(Stream dataStream, string filename)
         {
             var filePath = FullPath(filename);
-            await Task.Run(() =>
+            
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                await dataStream.CopyToAsync(stream);
+                
+            }
+            /*await Task.Run(() =>
             {
                 using (var fileStream = File.OpenWrite(filePath))
                 {
@@ -46,7 +52,7 @@ namespace DAL.Repositories
                         } while (bytes.Length >= BufferSize);
                     }
                 }
-            });
+            });*/
 
             return filePath;
         }

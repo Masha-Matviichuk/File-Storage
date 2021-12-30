@@ -15,7 +15,12 @@ namespace BLL.Configuration
             
             
             CreateMap<User, SignUp>()
-                .ForMember(u=>u.NickName, m=>m.MapFrom(user=>user.NickName))
+                .ForMember(u=>u.Email, m=>m.MapFrom(user=>user.Email))
+                .ReverseMap();
+            
+            CreateMap<User, UserInfoDto>()
+                .ForMember(u=>u.Email, m=>m.MapFrom(user=>user.Email))
+                
                 .ReverseMap();
             
             /*CreateMap<UserProfile, UserProfileDto>()
@@ -32,7 +37,6 @@ namespace BLL.Configuration
                 .ForMember(u=>u.UserName, m=>m.MapFrom(user=>user.Email))
                 .ForMember(u=>u.FirstName, m=>m.MapFrom(user=>user.FirstName))
                 .ForMember(u=>u.LastName, m=>m.MapFrom(user=>user.LastName))
-                .ForMember(u=>u.NickName, m=>m.MapFrom(user=>user.NickName))
                 .ReverseMap();
 
             /*  CreateMap<User, LogIn>()

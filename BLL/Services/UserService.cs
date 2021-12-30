@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Interfaces;
@@ -48,5 +49,21 @@ namespace BLL.Services
         {
             await _unitOfWork.UserRepository.DeleteByIdAsync(id);
         }
+
+        public async Task<IEnumerable<FileDto>> GetAllUsersFiles(int userId)
+        {
+            var files = await _unitOfWork.FileRepository.GetAllAsync();
+            var userFiles = files.Where(f => f.UserId == userId);
+            //var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
+        }
+        
+        /*public async Task<FileDto> GetUserFileById(int userId, int fileId)
+        {
+            var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            var file = await _unitOfWork.FileRepository.GetAllAsync();
+            file.Where()
+            return _autoMapper.Map<IEnumerable<FileDto>>(user.Files);
+        }*/
     }
 }

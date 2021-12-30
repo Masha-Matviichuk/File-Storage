@@ -90,7 +90,11 @@ namespace BLL.Services
             }
         }
         
-
+        /// <summary>
+        /// This method returns all users roles in string. I need this method for JWT.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>All users roles in string format</returns>
         public async Task<IEnumerable<string>> GetRoles(UserProfile user)
         {
             return await _userManager.GetRolesAsync(user);

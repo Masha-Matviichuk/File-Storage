@@ -5,8 +5,7 @@ namespace DAL.Entities
 {
     public class User : BaseEntity
     {
-        public string NickName { get; set; }
-       
+        public string Email { get; set; }
         public virtual ICollection<File> Files { get; set; }
         //public virtual UserProfile UserProfile { get; set; }
 
