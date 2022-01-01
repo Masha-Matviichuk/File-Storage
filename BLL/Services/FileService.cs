@@ -43,7 +43,7 @@ namespace BLL.Services
      //Maybe Equals better replace with ==
         public async Task<File> AddAsync(Stream fileStream, FileDto model)
         {
-            var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title);
+            var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title, model.Extension);
             var userEmail =  _userManager.GetUserName(model.CurrentUser);
             var users = await _unitOfWork.UserRepository.GetAllAsync();
 
@@ -64,7 +64,7 @@ namespace BLL.Services
             if (fileStream != null)
             {
                 _unitOfWork.FileStorageRepository.Delete(file.Url);
-                 var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title);
+                 var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title, model.Extension);
                  file.Url = path;
                  file.Size = _unitOfWork.FileStorageRepository.GetInfo(path).Length;
             }
@@ -72,6 +72,7 @@ namespace BLL.Services
             file.AccessId = model.AccessId;
             file.Description = model.Description;
             file.Title = model.Title;
+            
 
            var newFile = await _unitOfWork.FileRepository.UpdateAsync(file);
             await _unitOfWork.SaveChangesAsync();

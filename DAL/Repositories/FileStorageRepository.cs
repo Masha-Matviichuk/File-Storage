@@ -10,9 +10,9 @@ namespace DAL.Repositories
     {
         private static readonly int BufferSize = 4096;
 
-        public string Create(Stream dataStream, string filename)
+        public string Create(Stream dataStream, string filename, string fileExtension)
         {
-            var filePath = FullPath(filename);
+            var filePath = FullPath(filename, fileExtension);
             using (var fileStream = File.OpenWrite(filePath))
             {
                 using (var data = new BinaryReader(dataStream))
@@ -29,9 +29,9 @@ namespace DAL.Repositories
             return filePath;
         }
 
-        public async Task<string> CreateAsync(Stream dataStream, string filename)
+        public async Task<string> CreateAsync(Stream dataStream, string filename, string fileExtension)
         {
-            var filePath = FullPath(filename);
+            var filePath = FullPath(filename, fileExtension);
             
             using (var stream = System.IO.File.Create(filePath))
             {
@@ -73,9 +73,10 @@ namespace DAL.Repositories
             File.Delete(filepath);
         }
 
-        private string FullPath(string filename)
+        private string FullPath(string filename, string fileExtension)
         {
             var normalizedFileName = GetAppropriateFileName(filename);
+            var fullName = string.Concat(normalizedFileName, fileExtension);
 
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 "FileStorageAppData");
@@ -88,7 +89,7 @@ namespace DAL.Repositories
 
             return Path.Combine(
                 path,
-                normalizedFileName);
+                fullName);
         }
 
         private string GetAppropriateFileName(string filename)

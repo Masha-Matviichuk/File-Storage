@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -77,6 +78,8 @@ namespace PL.Controllers
             
             var file = uploadedFile.OpenReadStream();
             var fileInfo = _mapper.Map<FileDto>(model);
+           // fileInfo.Title = uploadedFile.Name;
+            fileInfo.Extension = Path.GetExtension(uploadedFile.FileName);
             fileInfo.CurrentUser = User;
             /*var result = await Request.ReadFormAsync();
             var file = result.Files[0].OpenReadStream();*/
@@ -94,6 +97,7 @@ namespace PL.Controllers
             if (file == null) return NotFound();
             
             var provider = new FileExtensionContentTypeProvider();
+            
             if (!provider.TryGetContentType(file.Url, out var contentType))
             {
                 contentType = "application/octet-stream";
@@ -108,12 +112,15 @@ namespace PL.Controllers
         //!!!!!!!!!!!!!!!!!!!!!!!!
         // PUT api/Files/edit
         [Authorize (Roles = "admin, user")]
-        [HttpPut("edit")]
-        public async Task<IActionResult> EditFile( CreateFileModel model, IFormFile uploadedFile)
+        [HttpPut("edit/{id:int}")]
+        [FileUploadOperation.FileContentType]
+        public async Task<IActionResult> EditFile( [FromForm] CreateFileModel model, IFormFile uploadedFile, int id)
         {
             var file = uploadedFile.OpenReadStream();
 
             var fileInfo = _mapper.Map<FileDto>(model);
+            fileInfo.Id = id;
+            fileInfo.Extension = Path.GetExtension(uploadedFile.FileName);
             /*var result = await Request.ReadFormAsync();
             var file = result.Files[0].OpenReadStream();*/
             

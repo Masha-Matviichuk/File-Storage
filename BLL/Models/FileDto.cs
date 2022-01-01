@@ -12,6 +12,7 @@ namespace BLL.Models
         public int UserId { get; set; }
         public string Description { get; set; }
         public int AccessId { get; set; }
+        public string Extension { get; set; }
         public DateTime Upload { get; set; }
         public long Size { get; set; }
         public ClaimsPrincipal CurrentUser { get; set; }
