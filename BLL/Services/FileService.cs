@@ -40,7 +40,7 @@ namespace BLL.Services
             return _autoMapper.Map<FileDto>(entity);
         }
 
-     //Maybe Equals better replace with ==
+     
         public async Task<File> AddAsync(Stream fileStream, FileDto model)
         {
             var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title, model.Extension);
@@ -51,7 +51,7 @@ namespace BLL.Services
             file.Url = path;
             file.Size = _unitOfWork.FileStorageRepository.GetInfo(path).Length;
             file.Upload = DateTime.Now;
-            file.UserId = users.FirstOrDefault(u => u.Email == userEmail).Id;    
+            file.UserId = users.FirstOrDefault(u => u.Email == userEmail).Id;
 
             var result =await _unitOfWork.FileRepository.CreateAsync(file);
             await _unitOfWork.SaveChangesAsync();
@@ -72,9 +72,8 @@ namespace BLL.Services
             file.AccessId = model.AccessId;
             file.Description = model.Description;
             file.Title = model.Title;
-            
 
-           var newFile = await _unitOfWork.FileRepository.UpdateAsync(file);
+            var newFile = await _unitOfWork.FileRepository.UpdateAsync(file);
             await _unitOfWork.SaveChangesAsync();
             return newFile;
         }
@@ -99,5 +98,12 @@ namespace BLL.Services
                 || x.Description.Contains(keyword)).ToList();
             return _autoMapper.Map<IEnumerable<FileDto>>(list);
         }
+        
+        public async Task<IEnumerable<AccessDto>> GetFileAccesses()
+        {
+            var list = await _unitOfWork.FileRepository.GetAccesses();
+            return _autoMapper.Map<IEnumerable<AccessDto>>(list);
+        }
+        
     }
 }

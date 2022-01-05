@@ -12,6 +12,11 @@ namespace BLL.Configuration
         public AutoMapperProfileForBLL()
         {
             CreateMap<DAL.Entities.File, FileDto>().ReverseMap();
+            CreateMap<Access, AccessDto>()
+                .ForMember(a=>a.Id, m=>m.MapFrom(access=>access.Id))
+                .ForMember(a=>a.Modifier, m=>m.MapFrom(access=>access.Modifier))
+                .ReverseMap();
+                //.ForMember(u=>u.AccessId, m=>m.MapFrom(file=>file.Access.Modifier))
             
             
             CreateMap<User, SignUp>()

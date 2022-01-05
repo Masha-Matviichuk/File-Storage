@@ -34,7 +34,9 @@ namespace DAL.Repositories
 
         public async Task<File> GetByIdAsync(int id)
         {
-            return await _context.Files.FindAsync(id);
+            var file = await _context.Files.FindAsync(id);
+                file.Access = await _context.Accesses.FindAsync(file.AccessId);
+                return file;
         }
 
         public void Create(File entity)
@@ -75,6 +77,11 @@ namespace DAL.Repositories
             var entity = await _context.Files.FindAsync(id);
             _context.Files.Remove(entity);
             await _context.SaveChangesAsync();
+        }
+        //maybe another
+        public async Task<IEnumerable<Access>> GetAccesses()
+        {
+            return await _context.Accesses.ToListAsync();
         }
     }
 }

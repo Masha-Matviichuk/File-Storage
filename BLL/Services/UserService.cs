@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Auth;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
 {
@@ -13,6 +16,7 @@ namespace BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _autoMapper;
+        private readonly UserManager<UserProfile> _userManager;
 
         public UserService(IUnitOfWork unitOfWork, IMapper autoMapper)
         {
@@ -58,6 +62,17 @@ namespace BLL.Services
             return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
         }
         
+        /*public async Task<IEnumerable<FileDto>> GetAllUsersFiles(ClaimsPrincipal user)
+        {
+            var userName = _userManager.GetUserName(user);
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
+            var userId = users.FirstOrDefault(u => u.Email == userName).Id;
+            var files = await _unitOfWork.FileRepository.GetAllAsync();
+            var userFiles = files.Where(f => f.UserId == userId);
+            //var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
+        }*/
+      
         /*public async Task<FileDto> GetUserFileById(int userId, int fileId)
         {
             var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);

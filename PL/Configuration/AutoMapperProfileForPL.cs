@@ -11,7 +11,9 @@ namespace PL.Configuration
     {
         public AutoMapperProfileForPL()
         {
-            CreateMap<FileDto, FileInfoModel>().ReverseMap();
+            CreateMap<FileDto, FileInfoModel>()
+                .ForMember(f=>f.Access, m=>m.MapFrom(file=>file.Access.Modifier))
+                .ReverseMap();
             CreateMap<UserInfoDto, UserInfoModel>().ReverseMap();
             CreateMap<SignUp, SignUpModel>()
                 .ForMember(u => u.FirstName, m => m.MapFrom(user => user.FirstName))
@@ -29,6 +31,10 @@ namespace PL.Configuration
                 .ForMember(f=>f.AccessId, m => m.MapFrom(file => file.AccessId))
                 .ReverseMap();
             CreateMap<LogIn, LogInModel>().ReverseMap();
+            
+            CreateMap<AccessDto, AccessListModel>()
+                .ForMember(a=>a.Modifier, m=>m.MapFrom(access=>access.Modifier))
+                .ReverseMap();
         }
     }
 }

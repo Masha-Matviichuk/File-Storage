@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Task DeleteByIdAsync(int id);
         Task<byte[]> ReadFileAsync(FileDto model);
         IEnumerable<FileDto> GetByKeyword(string keyword);
+        Task<IEnumerable<AccessDto>> GetFileAccesses();
     }
 }

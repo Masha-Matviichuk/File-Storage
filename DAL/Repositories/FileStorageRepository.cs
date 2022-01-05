@@ -75,7 +75,7 @@ namespace DAL.Repositories
 
         private string FullPath(string filename, string fileExtension)
         {
-            var normalizedFileName = GetAppropriateFileName(filename);
+            var normalizedFileName = Guid.NewGuid().ToString();
             var fullName = string.Concat(normalizedFileName, fileExtension);
 
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
@@ -91,8 +91,9 @@ namespace DAL.Repositories
                 path,
                 fullName);
         }
+        
 
-        private string GetAppropriateFileName(string filename)
+        /*private string GetAppropriateFileName(string filename)
         {
             var filenameChars =
                 filename
@@ -102,6 +103,6 @@ namespace DAL.Repositories
                     .ToArray();
 
             return new string(filenameChars);
-        }
+        }*/
     }
 }

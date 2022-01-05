@@ -11,7 +11,7 @@ namespace PL.Controllers
 {
     [ApiController]
     [Route("[controller]/users")]
-    [Authorize (Roles = "admin")]
+   // [Authorize (Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly IMapper _mapper;
