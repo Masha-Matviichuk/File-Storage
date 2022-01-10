@@ -59,6 +59,7 @@ namespace PL
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFileAccessRepository, FileAccessRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFileStorageDBContext, FileStorageDBContext>();
@@ -66,6 +67,7 @@ namespace PL
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IRoleService, RoleService>();
             
             //services.AddDbContext<FileStorageDBContext>();
 
@@ -82,6 +84,8 @@ namespace PL
             {
                 options.Password.RequiredLength = 8;
             }).AddEntityFrameworkStores<AdministrationDBContext>();
+            
+            
 
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
 
@@ -109,6 +113,8 @@ namespace PL
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+            
+            
                 
 
            // services.AddControllers(options => { options.Filters.Add<CustomExceptionFilterAttribute>(); });
@@ -141,6 +147,21 @@ namespace PL
                 c.AddSecurityRequirement(security);
               
             });
+
+            /*services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            ;
+                    });
+            });
+                //https://localhost:4200/*/
+            services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -153,10 +174,15 @@ namespace PL
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors(builder => builder.AllowAnyOrigin());
+           
+            //builder => builder.AllowAnyOrigin()
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

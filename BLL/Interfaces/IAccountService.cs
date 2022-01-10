@@ -11,9 +11,7 @@ namespace BLL.Interfaces
     {
         Task SignUp(SignUp data);
         Task<UserProfile> LogIn(LogIn data);
-        Task AssignUserToRoles(AssignUserToRoles assignUserToRoles);
-        Task CreateRole(string roleName);
-        Task<IEnumerable<string>> GetRoles(UserProfile user);
-        Task<IEnumerable<IdentityRole>> GetRoles();
+        Task DeleteAccount(int id);
+       
     }
 }

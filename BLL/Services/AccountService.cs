@@ -57,52 +57,20 @@ namespace BLL.Services
             return await _userManager.CheckPasswordAsync(user, data.Password) ? user : null;
         }
         
-        /*public async Task<User> LogOut(LogIn data)
+       
+
+        public async Task DeleteAccount(int id)
         {
-            _u
-            var user = _userManager.Users.SingleOrDefault(u => u.UserProfile.UserName == data.Email);
-            if (user is null) throw new System.Exception($"User not found: '{data.Email}'.");
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
+            var userEmail = users.FirstOrDefault(u => u.Id == id)?.Email;
 
-            return await _userManager.CheckPasswordAsync(user, data.Password) ? user : null;
-        }*/
+            if (userEmail == null) throw new NullReferenceException(nameof(userEmail));
 
-        public async Task AssignUserToRoles(AssignUserToRoles assignUserToRoles)
-        {
-            var user = _userManager.Users.SingleOrDefault(u => u.UserName == assignUserToRoles.Email);
-            var roles = _roleManager.Roles.ToList().Where(r => assignUserToRoles.Roles.Contains(r.Name, StringComparer.OrdinalIgnoreCase))
-                .Select(r => r.NormalizedName).ToList();
-
-            var result = await _userManager.AddToRolesAsync(user, roles); // THROWS
-
-            if (!result.Succeeded)
-            {
-                throw new System.Exception(string.Join(';', result.Errors.Select(x => x.Description)));
-            }
-        }
-
-        public async Task CreateRole(string roleName)
-        {
-            var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
-
-            if (!result.Succeeded)
-            {
-                throw new System.Exception($"Role could not be created: {roleName}.");
-            }
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == userEmail);
+                await _unitOfWork.UserRepository.DeleteByIdAsync(id);
+                await _userManager.DeleteAsync(user);
+                await _unitOfWork.SaveChangesAsync();
         }
         
-        /// <summary>
-        /// This method returns all users roles in string. I need this method for JWT.
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns>All users roles in string format</returns>
-        public async Task<IEnumerable<string>> GetRoles(UserProfile user)
-        {
-            return await _userManager.GetRolesAsync(user);
-        }
-
-        public async Task<IEnumerable<IdentityRole>> GetRoles()
-        {
-            return await _roleManager.Roles.ToListAsync();
-        }
     }
 }

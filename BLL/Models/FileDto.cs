@@ -16,7 +16,6 @@ namespace BLL.Models
         public DateTime Upload { get; set; }
         public long Size { get; set; }
         public ClaimsPrincipal CurrentUser { get; set; }
-        public User User { get; set; }
         public Access Access { get; set; }
     }
 }

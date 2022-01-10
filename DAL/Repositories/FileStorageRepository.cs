@@ -80,7 +80,9 @@ namespace DAL.Repositories
 
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
                 "FileStorageAppData");
-
+//Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
+//AppDomain.CurrentDomain.BaseDirectory
+//"C:\\Prg"
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             if (!dirInfo.Exists)
             {

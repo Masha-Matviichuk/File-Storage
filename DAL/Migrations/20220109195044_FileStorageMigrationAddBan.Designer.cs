@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(FileStorageDBContext))]
-    [Migration("20211230171556_FileStorageMigration3")]
-    partial class FileStorageMigration3
+    [Migration("20220109195044_FileStorageMigrationAddBan")]
+    partial class FileStorageMigrationAddBan
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,6 +82,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndOfBan")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

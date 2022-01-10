@@ -10,6 +10,7 @@ namespace DAL.UoW
         private readonly FileStorageDBContext _context;
         private IFileRepository _fileRepository;
         private IUserRepository _userRepository;
+        private IFileAccessRepository _fileAccessRepository;
         private IFileStorageRepository _storage;
 
         public UnitOfWork(FileStorageDBContext context)
@@ -55,10 +56,18 @@ namespace DAL.UoW
                 return _userRepository;
             }
         }
-
-        public int SaveChanges()
+        
+        public IFileAccessRepository FileAccessRepository
         {
-            return _context.SaveChanges();
+            get
+            {
+                if (_fileAccessRepository==null)
+                {
+                    _fileAccessRepository= new FileAccessRepository(_context);
+                }
+
+                return _fileAccessRepository;
+            }
         }
 
         public Task<int> SaveChangesAsync()

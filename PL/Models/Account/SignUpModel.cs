@@ -14,8 +14,8 @@ namespace PL.Models.Account
         public int PhoneNumber { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
-        [Compare(nameof(Password))]
+        //[Required]
+        //[Compare(nameof(Password))]
         public string PasswordConfirm { get; set; }
         
     }

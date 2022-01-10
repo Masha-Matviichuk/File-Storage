@@ -39,7 +39,7 @@ namespace PL.Helpers
                             Format = "formData"
                         }
                     },
-                    Required = new HashSet<string>(){  "uploadedFile"  }
+                   // Required = new HashSet<string>(){  "uploadedFile"  }
                 }
             };
 

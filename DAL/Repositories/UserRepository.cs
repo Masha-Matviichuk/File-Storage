@@ -66,6 +66,7 @@ namespace DAL.Repositories
         public void Delete(int id)
         {
             var entity= _context.Users.Find(id);
+            if (entity == null) return;
             _context.Users.Remove(entity);
             _context.SaveChanges();
         }
@@ -73,6 +74,7 @@ namespace DAL.Repositories
         public async Task DeleteByIdAsync(int id)
         {
             var entity= await _context.Users.FindAsync(id);
+            if (entity == null) return;
             _context.Users.Remove(entity);
             await _context.SaveChangesAsync();
         }

@@ -34,6 +34,7 @@ namespace PL.Configuration
             
             CreateMap<AccessDto, AccessListModel>()
                 .ForMember(a=>a.Modifier, m=>m.MapFrom(access=>access.Modifier))
+                .ForMember(a=>a.Id, m=>m.MapFrom(access=>access.Id))
                 .ReverseMap();
         }
     }

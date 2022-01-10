@@ -11,6 +11,7 @@ using BLL.Models;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using File = DAL.Entities.File;
 
 namespace BLL.Services
@@ -34,15 +35,35 @@ namespace BLL.Services
             return _autoMapper.Map<IEnumerable<FileDto>>(entities);
         }
 
-        public async Task<FileDto> GetByIdAsync(int id)
+        public async Task<FileDto> GetByIdAsync(int id, string email)
         {
             var entity = await _unitOfWork.FileRepository.GetByIdAsync(id);
-            return _autoMapper.Map<FileDto>(entity);
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            if (email!=null)
+            {
+                var users = await _unitOfWork.UserRepository.GetAllAsync(); 
+                var userId = users.FirstOrDefault(u => u.Email == email)?.Id;
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
+                var userRole = await _userManager.GetRolesAsync(user);
+                
+                if (userRole.Contains("admin"))
+                    return _autoMapper.Map<FileDto>(entity);
+                
+                if (entity.UserId!=userId && entity.AccessId==1)
+                    return new FileDto();
+                else
+                    return _autoMapper.Map<FileDto>(entity);
+            }else
+                return entity.AccessId==1 ? new FileDto() : _autoMapper.Map<FileDto>(entity);
         }
 
      
         public async Task<File> AddAsync(Stream fileStream, FileDto model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (fileStream == null) throw new ArgumentNullException(nameof(fileStream));
+            
             var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title, model.Extension);
             var userEmail =  _userManager.GetUserName(model.CurrentUser);
             var users = await _unitOfWork.UserRepository.GetAllAsync();
@@ -60,8 +81,10 @@ namespace BLL.Services
 
         public async Task<File> UpdateAsync(Stream fileStream, FileDto model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
             var file = await _unitOfWork.FileRepository.GetByIdAsync(model.Id);
-            if (fileStream != null)
+          
+            if (fileStream.Length != 0)
             {
                 _unitOfWork.FileStorageRepository.Delete(file.Url);
                  var path = await _unitOfWork.FileStorageRepository.CreateAsync(fileStream, model.Title, model.Extension);
@@ -81,6 +104,7 @@ namespace BLL.Services
         public async Task DeleteByIdAsync(int id)
         {
             var file = await _unitOfWork.FileRepository.GetByIdAsync(id);
+            if (file == null) return;
              _unitOfWork.FileStorageRepository.Delete(file.Url);
              await _unitOfWork.FileRepository.DeleteByIdAsync(id);
              await _unitOfWork.SaveChangesAsync();
@@ -88,22 +112,52 @@ namespace BLL.Services
 
         public async Task<byte[]> ReadFileAsync(FileDto model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+            
             var file = await _unitOfWork.FileRepository.GetByIdAsync(model.Id);
             return await _unitOfWork.FileStorageRepository.ReadAsync(file.Url);
         }
 
-        public IEnumerable<FileDto> GetByKeyword(string keyword)
+        public async  Task<IEnumerable<FileDto>> GetByKeyword(string keyword, string userEmail)
         {
-            var list = _unitOfWork.FileRepository.GetAll().Where(x => x.Title.Contains(keyword)
-                || x.Description.Contains(keyword)).ToList();
+            List<File> list;
+            var allFiles = await _unitOfWork.FileRepository.GetAllAsync();
+            var user = _userManager.Users.FirstOrDefault(u=>u.UserName==userEmail);
+
+            if (user == null) throw new NullReferenceException();
+           
+            
+            var userId = (await _unitOfWork.UserRepository.GetAllAsync())
+                .FirstOrDefault(u => u.Email == user.UserName)?.Id;
+            var userFiles = allFiles.Where(f => f.UserId == userId).ToList();
+            var roles = (await _userManager.GetRolesAsync(user)).ToList();
+            
+            if ( roles.Contains("admin"))
+                list = allFiles.Where(x => x.Title.Contains(keyword) 
+                                           || x.Description.Contains(keyword)).ToList();
+            else
+                list = userFiles.Where(x => x.Title.Contains(keyword)
+                                            || x.Description.Contains(keyword)).ToList();
+            
             return _autoMapper.Map<IEnumerable<FileDto>>(list);
         }
         
+        public async Task<IEnumerable<FileDto>> GetAllUsersFiles(string userEmail)
+        {
+            var files = await _unitOfWork.FileRepository.GetAllAsync();
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
+
+            var userId = users.FirstOrDefault(u => u.Email == userEmail)?.Id;
+            var userFiles = files.Where(f => f.UserId == userId);
+            return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
+        }
+
+        
+        
         public async Task<IEnumerable<AccessDto>> GetFileAccesses()
         {
-            var list = await _unitOfWork.FileRepository.GetAccesses();
+            var list = await _unitOfWork.FileAccessRepository.GetAccesses();
             return _autoMapper.Map<IEnumerable<AccessDto>>(list);
         }
-        
     }
 }

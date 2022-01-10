@@ -11,19 +11,22 @@ namespace PL.Controllers
 {
     [ApiController]
     [Route("[controller]/users")]
-   // [Authorize (Roles = "admin")]
+    [Authorize (Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IAccountService _accountService;
+        private readonly IRoleService _roleService;
       
 
-        public AdminController(IMapper mapper, IUserService userService, IAccountService accountService)
+        public AdminController(IMapper mapper, IUserService userService, 
+            IAccountService accountService, IRoleService roleService)
         {
             _mapper = mapper;
             _userService = userService;
             _accountService = accountService;
+            _roleService = roleService;
         }
         
         // GET api/Admin/users
@@ -44,45 +47,21 @@ namespace PL.Controllers
             return Ok(user);
         }
         
-        // GET api/Admin/users/4/files
-        [HttpGet("{userId:int}/files")]
-        public async Task<IActionResult> GetUserFiles(int userId)
-        {
-            var files = await _userService.GetAllUsersFiles(userId);
-
-            return Ok(files);
-        }
-        
-        // GET api/Admin/users/4/files/2
-        [HttpGet("{userId:int}/files/{fileId:int}")]
-        public async Task<IActionResult> GetUserFileById(int userId, int fileId)
-        {
-            var files = await _userService.GetAllUsersFiles(userId);
-            var file = files.FirstOrDefault(f => f.Id == fileId);
-
-            return Ok(file);
-        }
-        
         // POST api/Admin/createRole
         [HttpPost("createRole")]
         public async Task<IActionResult> CreateRole(CreateRoleModel model)
         {
-            await _accountService.CreateRole(model.RoleName);
+            await _roleService.CreateRole(model.RoleName);
             return Ok();
         }
 
-        // GET api/Admin/getRole
-        [HttpGet("getRoles")]
-        public async Task<IActionResult> GetRoles()
-        {
-            return Ok(await _accountService.GetRoles());
-        }
+        
 
         // POST api/Admin/assignUserToRole
         [HttpPost("assignUserToRole")]
         public async Task<IActionResult> AssignUserToRole(AssignUserToRolesModel model)
         {
-            await _accountService.AssignUserToRoles(new AssignUserToRoles
+            await _roleService.AssignUserToRoles(new AssignUserToRoles
             {
                 Email = model.Email,
                 Roles = model.Roles,
@@ -94,7 +73,13 @@ namespace PL.Controllers
 
         
         //Add ban for users
-        
+        [HttpPut("ban/{id:int}")]
+        public async Task<IActionResult> AssignUserToRole(int id, int days)
+        {
+            await _userService.UserBan(id, days);
+
+            return Ok();
+        }
         
     }
 }

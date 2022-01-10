@@ -81,6 +81,12 @@ namespace DAL.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EndOfBan")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");

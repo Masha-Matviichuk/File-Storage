@@ -12,7 +12,10 @@ namespace BLL.Interfaces
         Task<File> UpdateAsync(Stream fileStream,  FileDto model);
         Task DeleteByIdAsync(int id);
         Task<byte[]> ReadFileAsync(FileDto model);
-        IEnumerable<FileDto> GetByKeyword(string keyword);
+        Task<IEnumerable<FileDto>> GetByKeyword(string keyword,  string userEmail);
         Task<IEnumerable<AccessDto>> GetFileAccesses();
+        
+        Task<FileDto> GetByIdAsync(int id, string user);
+        Task<IEnumerable<FileDto>> GetAllUsersFiles(string user);
     }
 }

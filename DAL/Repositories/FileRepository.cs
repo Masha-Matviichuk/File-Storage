@@ -17,10 +17,10 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-            public IQueryable<File> GetAll()
-            {
-                return _context.Files;
-            }
+        public IQueryable<File> GetAll()
+        {
+            return _context.Files;
+        }
 
         public async Task<IEnumerable<File>> GetAllAsync()
         {
@@ -68,6 +68,7 @@ namespace DAL.Repositories
         public void Delete(int id)
         {
             var entity = _context.Files.Find(id);
+            if (entity == null) return;
             _context.Remove(entity);
             _context.SaveChanges();
         }
@@ -75,13 +76,10 @@ namespace DAL.Repositories
         public async Task DeleteByIdAsync(int id)
         {
             var entity = await _context.Files.FindAsync(id);
+            if (entity == null) return;
             _context.Files.Remove(entity);
             await _context.SaveChangesAsync();
         }
-        //maybe another
-        public async Task<IEnumerable<Access>> GetAccesses()
-        {
-            return await _context.Accesses.ToListAsync();
-        }
+        
     }
 }
