@@ -1,0 +1,30 @@
+<div class="assign-role">
+    <h3>Assign role to user</h3>
+<form class="form">
+    <div  id="email-input" class="input-group flex-nowrap">
+        <span class="input-group-text" id="addon-wrapping">User email:</span>
+        <input type="text" name="email" class="form-control" placeholder="Username" 
+        aria-label="Username" aria-describedby="addon-wrapping"
+        #email="ngModel"
+             [(ngModel)]="Email" 
+             required>
+      </div>
+      <div class="invalid-input" *ngIf="email.invalid && email.touched">
+        This field can't be empty.
+       </div>
+
+      <div class="role-label">User role:</div>
+      <div class="my-3" *ngFor="let role of roles">
+        <div class="form-check">
+          <input id="{{role.name}}" name="role" type="radio" class="form-check-input" value="{{role.name}}"  #role="ngModel"
+          [(ngModel)]="Role" (change)="chooseRole($event)">
+          <label class="form-check-label" for="role">{{role.name}}</label>
+        </div>
+      </div>
+  
+      <button type="button" class="btn btn-primary" [disabled]="!email.valid || selectedRole===''" (click)="assignRole(email.value, selectedRole)">Assign</button>
+      <div class="invalid-input" *ngIf="error==true">
+        There is no user with such email or this user already has this role.
+       </div>
+    </form>
+</div>

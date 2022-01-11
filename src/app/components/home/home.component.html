@@ -1,0 +1,20 @@
+<header class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a [routerLink]="['/files']" *ngIf="userAuthorized()" class="nav-link active" aria-current="page">Files</a></li>
+      <li class="nav-item"><a class="nav-link" *ngIf="!userAuthorized()"  routerLink="/signin">Sign in</a></li>
+      <li class="nav-item"><a class="nav-link" *ngIf="!userAuthorized()" routerLink="/signup">Sign up</a></li>
+      <li class="nav-item"><a class="nav-link" *ngIf="userAuthorized()" (click)="logout()">Sign out</a></li>
+    </ul>
+  </header>
+
+<router-outlet></router-outlet>
+  <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><a class="nav-link px-2 text-muted" routerLink="['/files']" *ngIf="userAuthorized()">Home</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" *ngIf="!userAuthorized()"  routerLink="/signin">Sign in</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted" *ngIf="!userAuthorized()" routerLink="/signup">Sign up</a></li>
+      <li class="nav-item"><a class="nav-link px-2 text-muted"*ngIf="userAuthorized()" (click)="logout()">Sign out</a></li>
+      
+    </ul>
+    <p class="text-center text-muted">© 2021 Company, Inc</p>
+  </footer> 

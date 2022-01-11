@@ -1,0 +1,50 @@
+
+<body class="text-center">
+    
+    <main class="form-signin">
+      <form  #userLoginForm="ngForm"
+      (ngSubmit)="onSubmit(userLoginForm)">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
+          name="Email"
+             #Email="ngModel"
+             [(ngModel)]="user.Email"
+             required>
+          <label for="floatingInput">Email address</label>
+          <div class="invalid-input" *ngIf="Email.invalid && Email.touched">
+            Valid email is required!
+          </div>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+          name="Password"
+             #Password="ngModel"
+             [(ngModel)]="user.Password"
+             required
+             minlength="8">
+          <label for="floatingPassword">Password</label>
+          <div class="invalid-input" *ngIf="Password.invalid && Password.touched">
+            Valid password is required!
+          </div>
+        </div>
+    
+        <div class="checkbox mb-3">
+          <label>
+            <a  routerLink="/signup">Sign Up</a>
+            <label for="floatingPassword">, if you don't have account!</label>
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="!userLoginForm.valid">Sign in</button>
+        <div class="invalid-input" *ngIf="err==true">
+          Invalid email or password.Try again!
+        </div>
+      </form>
+    </main>
+    
+    
+        
+      
+    
+    </body>

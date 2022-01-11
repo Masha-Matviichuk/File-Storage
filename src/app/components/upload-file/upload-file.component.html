@@ -1,0 +1,63 @@
+
+<body class="text-center">
+    
+    <main class="form-edit">
+        <h4 class="mb-3">Add new file</h4>
+        <form #fileUploadForm="ngForm" (ngSubmit)="onSubmit(fileUploadForm)" class="needs-validation" >
+            <div class="row g-3" id="form">
+              <div class="col-sm-6">
+                <label for="Title" class="form-label">Name</label>
+                <input type="text" name="Title" class="form-control" id="Title" #Title="ngModel"
+                [(ngModel)]="title" minlength="2" required>
+                <div class="invalid-input" *ngIf="Title.invalid && Title.touched">
+                  Valid name is required.
+                </div>
+              </div>
+             
+      
+              <div class="col-sm-6">
+                <label for="Description" class="form-label" >Description</label>
+                <textarea type="text"  name="Description" class="form-control" id="Description" #Description="ngModel"
+                [(ngModel)]="description"></textarea>
+              </div>
+      
+            <hr class="my-4">
+      
+            <h5 class="mb-3">Access</h5>
+      
+            <div class="my-3" *ngFor="let access of accessTypes">
+              <div class="form-check">
+                <input id="{{access.id}}" name="accessType" type="radio" class="form-check-input" value="{{access.id}}"  #Access="ngModel"
+                [(ngModel)]="access.id" (change)="chooseAccessType($event)">
+                <label class="form-check-label" for="Private">{{access. modifier}}</label>
+              </div>
+              
+            </div>
+      
+            </div>
+      
+            <hr class="my-4">
+
+            <div class="mb-3">
+                <label for="file" class="form-label">File</label>
+                <input class="form-control" type="file" id="file" name="fileToUpload" 
+                (change)="handleFileInput(($any($event.target))!.files)"
+                  required>
+              </div>
+
+              <hr class="my-4">
+      <div class="button">
+            <button class="w-100 btn btn-primary btn-lg"  type="submit">Upload</button>
+            
+        </div>
+        <div id="block-message" class="alert alert-danger" role="alert" *ngIf="err==403">
+          It`s forbbiden now! You in block!
+        </div>
+          </form>
+    </main>
+    
+    
+        
+      
+    
+    </body>

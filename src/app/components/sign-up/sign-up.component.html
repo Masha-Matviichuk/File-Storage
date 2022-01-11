@@ -1,0 +1,105 @@
+
+<body class="text-center">
+    
+    <main class="form-signin">
+      <form #userRegistrationForm="ngForm"
+      (ngSubmit)="onSubmit(userRegistrationForm)">
+        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+    
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingInput" placeholder="First name"
+          name="FirstName"
+             #FirstName="ngModel"
+             [(ngModel)]="user.FirstName"
+             minlength="3"
+             required>
+          <label for="floatingInput">First name</label>
+          <div class="invalid-input" *ngIf="FirstName.invalid && FirstName.touched">
+            Valid first name is required!
+          </div>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Last name"
+            name="LastName"
+            #LastName="ngModel"
+            [(ngModel)]="user.LastName"
+            minlength="2"
+            required>
+            <label for="floatingInput">Last name</label>
+            <div class="invalid-input" *ngIf="LastName.invalid && LastName.touched">
+              Valid last name is required!
+            </div>
+          </div>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
+            name="Email"
+             #Email="ngModel"
+             [(ngModel)]="user.Email"
+             minlength="6"
+             required>
+            <label for="floatingInput">Email address</label>
+            <div class="invalid-input" *ngIf="Email.invalid && Email.touched">
+              Valid email is required!
+            </div>
+          </div>
+          <div class="form-floating">
+            <div class="number">
+            <span class="input-group-text" id="basic-addon1">+380</span>
+            <input type="tel" class="form-control" id="floatingInput" placeholder="Mobile number"
+            name="PhoneNumber"
+             #PhoneNumber="ngModel"
+             [(ngModel)]="user.PhoneNumber" maxlength="9" required>
+             <div class="invalid-input" *ngIf="PhoneNumber.invalid && PhoneNumber.touched">
+              Valid number is required!
+            </div>
+             </div>
+            
+          </div>
+          <div class="alert alert-primary" role="alert" id="message">
+            Password must contain at least one uppercase letter, number and character!
+          </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="Password"
+          #Password="ngModel"
+          [(ngModel)]="user.Password"
+          required
+          minlength="8">
+          <label for="floatingPassword">Password</label>
+          <div class="invalid-input" *ngIf="Password.invalid && Password.touched">
+            Valid password is required!
+          </div>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Confirm password"
+            name="PasswordConfirm"
+            #PasswordConfirm="ngModel"
+            [(ngModel)]="user.PasswordConfirm"
+            required
+            minlength="8">
+            <label for="floatingPassword">Confirm password</label>
+            <div class="invalid-input" *ngIf="PasswordConfirm.invalid && PasswordConfirm.touched">
+              Password in previous fiels is different!
+            </div>
+          </div>
+        
+        
+    
+        <div class="checkbox mb-3">
+          <label>
+            <a routerLink="/signin">Sign In</a>
+            <label for="floatingPassword">, if you have account!</label>
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit"
+        [disabled]="!userRegistrationForm.valid">Sign up</button>
+        <div class="invalid-input" *ngIf="err==true">
+          One of fields is invalid!
+        </div>
+      </form>
+    </main>
+    
+    
+        
+      
+    
+    </body>

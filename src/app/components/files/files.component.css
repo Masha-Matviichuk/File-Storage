@@ -1,0 +1,31 @@
+a{
+    padding-left: 20px;
+}
+
+.index{
+    padding-right: 5px;
+}
+
+.serch-area{
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+.upload-button{
+   display: grid; 
+   justify-content: end;
+   margin: 5px;
+}
+
+#block-message{
+    margin-top: 20px;
+}
+
+.container-fluid{
+    display: flex;
+    justify-content: flex-start
+}
+
+#admin-panel{
+    margin-bottom: 20px;
+}

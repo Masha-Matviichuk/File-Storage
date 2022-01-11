@@ -1,0 +1,13 @@
+form{
+    display: grid;
+    justify-content: center;
+}
+
+.form-floating{
+    width: 300px;
+    margin-top: 10px;
+}
+
+.invalid-input{
+    color: red;
+}

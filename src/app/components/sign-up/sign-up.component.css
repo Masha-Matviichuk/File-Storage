@@ -1,0 +1,23 @@
+form{
+    display: grid;
+    justify-content: center;
+}
+
+.form-floating{
+    width: 300px;
+    margin-top: 10px;
+}
+
+.number{
+    display: flex;
+    height: 55px;
+}
+
+.invalid-input{
+    color: red;
+}
+
+#message{
+    width: 300px;
+    margin-top: 20px;
+}

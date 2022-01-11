@@ -1,0 +1,39 @@
+
+<div class="form">
+
+  <h3>Block user</h3>
+    <div class="col-md">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingInputGrid" 
+          placeholder="name@example.com" value=""
+          #Id="ngModel"
+          [(ngModel)]="id"
+             required>
+          <label for="floatingInputGrid">User ID</label>
+        </div>
+      </div>
+      <div class="invalid-input" *ngIf="Id.invalid && Id.touched">
+        This field can't be empty.
+       </div>
+      <div class="col-md">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInputGrid" 
+          placeholder="Number of days" value=""
+          #Days="ngModel"
+          [(ngModel)]="days"
+             required>
+          <label for="floatingInputGrid">Number of days</label>
+        </div>
+        <div class="invalid-input" *ngIf="Days.invalid && Days.touched">
+          This field can't be empty.
+         </div>
+
+        <button type="button" class="btn btn-primary" [disabled]="!Days.valid || !Id.valid" (click)="blockUser(Id.value, Days.value)">Block</button>
+        <div class="invalid-input" *ngIf="error==500">
+          There is no user with such id.
+         </div>
+         <div class="invalid-input" *ngIf="error==400">
+          Number of days not valid.
+         </div>
+      </div>
+</div>
