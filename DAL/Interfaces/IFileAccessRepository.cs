@@ -6,6 +6,6 @@ namespace DAL.Interfaces
 {
     public interface IFileAccessRepository
     {
-        Task<IEnumerable<Access>> GetAccesses();
+        Task<IEnumerable<Access>> GetAll();
     }
 }

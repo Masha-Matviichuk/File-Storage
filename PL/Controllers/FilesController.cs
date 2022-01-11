@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,6 +33,7 @@ namespace PL.Controllers
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
         private readonly IUserService _userService;
+       
 
 
         public FilesController(IMapper mapper, IFileService filetService, IUserService userService)
@@ -60,10 +62,6 @@ namespace PL.Controllers
             var user = User.Identity?.Name;
              if (user == null) throw new NullReferenceException(nameof(user));
 
-             /*if (await _userService.CheckBan(user, DateTime.Now))
-            {
-                return BadRequest("User is banned!");
-            }*/
             var file = await _fileService.GetByIdAsync(id, user);
             if (file.Id == 0)
             {
@@ -83,9 +81,14 @@ namespace PL.Controllers
             
             var userEmail = User.Identity?.Name;
             
+            if (userEmail==null)
+            {
+                return BadRequest();
+            }
+            
             if (await _userService.CheckBan(userEmail, DateTime.Now))
             {
-                return BadRequest("User is banned!");
+                return Forbid();
             }
             var files = await _fileService.GetByKeyword(keyword, userEmail);
 
@@ -99,22 +102,22 @@ namespace PL.Controllers
         [FileUploadOperation.FileContentType]
         public async Task<IActionResult> UploadFile([FromForm] CreateFileModel model, IFormFile uploadedFile)
         {
+            
             var user = User.Identity?.Name;
-            if (await _userService.CheckBan(user, DateTime.Now))
+            if (user == null) throw new NullReferenceException(nameof(user));
+                if (await _userService.CheckBan(user, DateTime.Now))
             {
-                return BadRequest("User is banned!");
+                return Forbid();
             }
             
             var file = uploadedFile.OpenReadStream();
             var fileInfo = _mapper.Map<FileDto>(model);
-            //fileInfo.Title = Path.GetFileName(uploadedFile.FileName);
             fileInfo.Extension = Path.GetExtension(uploadedFile.FileName);
             fileInfo.CurrentUser = User;
-            /*var result = await Request.ReadFormAsync();
-            var file = result.Files[0].OpenReadStream();*/
             var createdFile = await _fileService.AddAsync(file, fileInfo);
-
+           
             return Created(fileInfo.Title, createdFile.Url);
+           
         }
         
         // GET api/Files/download/4
@@ -123,9 +126,15 @@ namespace PL.Controllers
         {
 
             var user = User.Identity?.Name;
+            
+            if (user==null)
+            {
+                return BadRequest();
+            }
+            
             if (await _userService.CheckBan(user, DateTime.Now))
             {
-                return BadRequest("User is banned!");
+                return Forbid();
             }
             var file = await _fileService.GetByIdAsync(id, user);
             if (file == null) return NotFound();
@@ -140,20 +149,26 @@ namespace PL.Controllers
             var data = await _fileService.ReadFileAsync(file);
 
             return File(data, contentType, file.Title);
-          //Path.GetFileName(file.Url)
+          
         }
         
-        //!!!!!!!!!!!!!!!!!!!!!!!!
-        // PUT api/Files/edit
+        
+        // PUT api/Files/edit/9
         [Authorize (Roles = "admin, user")]
         [HttpPut("edit/{id:int}")]
         [FileUploadOperation.FileContentType]
         public async Task<IActionResult> EditFile( [FromForm] CreateFileModel model, IFormFile uploadedFile, int id)
         {
             var user = User.Identity?.Name;
+            
+            if (user==null)
+            {
+                return BadRequest();
+            }
+            
             if (await _userService.CheckBan(user, DateTime.Now))
             {
-                return BadRequest("User is banned!");
+                return Forbid();
             }
             
                 var file = uploadedFile.OpenReadStream();
@@ -192,40 +207,30 @@ namespace PL.Controllers
         public async Task<IActionResult> DeleteFile(int id)
         {
             var user = User.Identity?.Name;
+            
+            if (user==null)
+            {
+                return BadRequest();
+            }
+            
             if (await _userService.CheckBan(user, DateTime.Now))
             {
-                return BadRequest("User is banned!");
+                return Forbid();
             }
             await _fileService.DeleteByIdAsync(id);
             return Ok();
         }
-        
-        
-        [HttpGet("accessList")]
-        public async Task<IActionResult> GetFilesAccesses()
-        {
-            var files =_mapper.Map<IEnumerable<AccessListModel>>(await _fileService.GetFileAccesses());
 
-            return Ok(files);
-        }
-        /*
-        // GET api/Admin/users/4/files/2
-        [HttpGet("{userId:int}/files/{fileId:int}")]
-        public async Task<IActionResult> GetUserFilesById(int userId, int fileId)
-        {
-            var files = await _userService.GetAllUsersFiles(userId);
-            var file = files.FirstOrDefault(f => f.Id == fileId);
-
-            return Ok(file);
-        }
-        */
-        
         // GET api/Files/users/4/files
         [Authorize(Roles = "user, admin")]
         [HttpGet("userFiles")]
         public async Task<IActionResult> GetUserFiles()
         {
-            var user = User.Identity.Name;
+            var user = User.Identity?.Name;
+            if (user==null)
+            {
+                return BadRequest();
+            }
             var files = await _fileService.GetAllUsersFiles(user);
 
             return Ok(files);

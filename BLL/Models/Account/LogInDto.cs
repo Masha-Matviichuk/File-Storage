@@ -1,8 +1,8 @@
 ﻿namespace BLL.Models.Account
 {
-    public class AssignUserToRoles
+    public class LogInDto
     {
         public string Email { get; set; }
-        public string[] Roles { get; set; }
+        public string Password { get; set; }
     }
 }

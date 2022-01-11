@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Auth;
+using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
@@ -84,27 +85,5 @@ namespace BLL.Services
             var entity = _autoMapper.Map<User>(model);
             await _unitOfWork.UserRepository.UpdateAsync(entity);
         }
-        
-        
-
-        
-        /*public async Task<IEnumerable<FileDto>> GetAllUsersFiles(ClaimsPrincipal user)
-        {
-            var userName = _userManager.GetUserName(user);
-            var users = await _unitOfWork.UserRepository.GetAllAsync();
-            var userId = users.FirstOrDefault(u => u.Email == userName).Id;
-            var files = await _unitOfWork.FileRepository.GetAllAsync();
-            var userFiles = files.Where(f => f.UserId == userId);
-            //var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);
-            return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
-        }*/
-      
-        /*public async Task<FileDto> GetUserFileById(int userId, int fileId)
-        {
-            var user =await _unitOfWork.UserRepository.GetByIdAsync(userId);
-            var file = await _unitOfWork.FileRepository.GetAllAsync();
-            file.Where()
-            return _autoMapper.Map<IEnumerable<FileDto>>(user.Files);
-        }*/
     }
 }

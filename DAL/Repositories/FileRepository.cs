@@ -17,19 +17,10 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-        public IQueryable<File> GetAll()
-        {
-            return _context.Files;
-        }
 
         public async Task<IEnumerable<File>> GetAllAsync()
         {
             return await _context.Files.ToListAsync();
-        }
-
-        public File GetById(int id)
-        {
-            return _context.Files.Find(id);
         }
 
         public async Task<File> GetByIdAsync(int id)
@@ -38,13 +29,7 @@ namespace DAL.Repositories
                 file.Access = await _context.Accesses.FindAsync(file.AccessId);
                 return file;
         }
-
-        public void Create(File entity)
-        { 
-            _context.Files.Add(entity);
-            _context.SaveChanges();
-        }
-
+        
         public async Task<File> CreateAsync(File entity)
         { 
            var file = await _context.Files.AddAsync(entity);
@@ -52,25 +37,11 @@ namespace DAL.Repositories
             return file.Entity;
         }
 
-        public void Update(File entity)
-        {
-           var newFile = _context.Files.Attach(entity);
-            _context.SaveChanges();
-        }
-
         public async Task<File> UpdateAsync(File entity)
         {
              var newFile =_context.Files.Attach(entity);
              await _context.SaveChangesAsync();
              return newFile.Entity;
-        }
-
-        public void Delete(int id)
-        {
-            var entity = _context.Files.Find(id);
-            if (entity == null) return;
-            _context.Remove(entity);
-            _context.SaveChanges();
         }
 
         public async Task DeleteByIdAsync(int id)

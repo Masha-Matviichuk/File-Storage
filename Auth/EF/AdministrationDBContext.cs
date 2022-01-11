@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Auth.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,13 +27,11 @@ namespace Auth
                  new IdentityRole("user"),
                   new IdentityRole("admin")
               });
-            //builder.Entity<File>()
-            // .HasKey(x => new { x.BookId, x.CardId });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.;Database=AdministrationDB;Trusted_Connection=True;");
+            //optionsBuilder.UseSqlServer(@"Server=.;Database=AdministrationDB;Trusted_Connection=True;");
         }
     }
 }

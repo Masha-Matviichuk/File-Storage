@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Auth;
+using Auth.Entities;
 using BLL.Configuration;
 using BLL.Interfaces;
 using BLL.Services;
@@ -50,8 +51,7 @@ namespace PL
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
            // services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
@@ -68,8 +68,8 @@ namespace PL
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IAccessService, AccessService>();
             
-            //services.AddDbContext<FileStorageDBContext>();
 
             services.AddDbContext<FileStorageDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("FileStorageDB")));
@@ -77,7 +77,7 @@ namespace PL
             services.AddDbContext<AdministrationDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AdministrationDB")));
             
-            services.AddAutoMapper(typeof(AutoMapperProfileForBLL));
+            services.AddAutoMapper(typeof(AutoMapperProfileForBll));
             services.AddAutoMapper(typeof(AutoMapperProfileForPL));
 
             services.AddIdentity<UserProfile, IdentityRole>(options =>
@@ -114,10 +114,6 @@ namespace PL
                     };
                 });
             
-            
-                
-
-           // services.AddControllers(options => { options.Filters.Add<CustomExceptionFilterAttribute>(); });
 
             services.AddSwaggerGen(c =>
             {
@@ -148,23 +144,10 @@ namespace PL
               
             });
 
-            /*services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder.WithOrigins()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            ;
-                    });
-            });
-                //https://localhost:4200/*/
             services.AddControllers()
                 .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -178,10 +161,10 @@ namespace PL
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
+            
             app.UseHttpsRedirection();
             app.UseRouting();
-           
-            //builder => builder.AllowAnyOrigin()
+            
             
             app.UseAuthentication();
             app.UseAuthorization();

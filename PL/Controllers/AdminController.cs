@@ -47,21 +47,12 @@ namespace PL.Controllers
             return Ok(user);
         }
         
-        // POST api/Admin/createRole
-        [HttpPost("createRole")]
-        public async Task<IActionResult> CreateRole(CreateRoleModel model)
-        {
-            await _roleService.CreateRole(model.RoleName);
-            return Ok();
-        }
-
-        
 
         // POST api/Admin/assignUserToRole
         [HttpPost("assignUserToRole")]
         public async Task<IActionResult> AssignUserToRole(AssignUserToRolesModel model)
         {
-            await _roleService.AssignUserToRoles(new AssignUserToRoles
+            await _roleService.AssignUserToRoles(new AssignUserToRolesDto
             {
                 Email = model.Email,
                 Roles = model.Roles,
@@ -72,9 +63,9 @@ namespace PL.Controllers
         }
 
         
-        //Add ban for users
+        // PUT api/Admin/ban/5
         [HttpPut("ban/{id:int}")]
-        public async Task<IActionResult> AssignUserToRole(int id, int days)
+        public async Task<IActionResult> BlockUser(int id, int days)
         {
             await _userService.UserBan(id, days);
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Auth;
+using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
@@ -150,14 +151,6 @@ namespace BLL.Services
             var userId = users.FirstOrDefault(u => u.Email == userEmail)?.Id;
             var userFiles = files.Where(f => f.UserId == userId);
             return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
-        }
-
-        
-        
-        public async Task<IEnumerable<AccessDto>> GetFileAccesses()
-        {
-            var list = await _unitOfWork.FileAccessRepository.GetAccesses();
-            return _autoMapper.Map<IEnumerable<AccessDto>>(list);
         }
     }
 }

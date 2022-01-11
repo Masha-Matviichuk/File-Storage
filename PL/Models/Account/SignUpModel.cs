@@ -12,10 +12,10 @@ namespace PL.Models.Account
         public string Email { get; set; }
         [Required]
         public int PhoneNumber { get; set; }
-        [Required]
+        [Required, MinLength(8)]
         public string Password { get; set; }
-        //[Required]
-        //[Compare(nameof(Password))]
+        [Required, MinLength(8)]
+        [Compare(nameof(Password))]
         public string PasswordConfirm { get; set; }
         
     }

@@ -1,6 +1,6 @@
 ﻿namespace BLL.Models.Account
 {
-    public class SignUp 
+    public class SignUpDto 
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

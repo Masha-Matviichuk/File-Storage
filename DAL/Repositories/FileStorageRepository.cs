@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,54 +7,21 @@ using DAL.Interfaces;
 
 namespace DAL.Repositories
 {
+    /// <summary>
+    /// This class works with file system.
+    /// </summary>
     public class FileStorageRepository : IFileStorageRepository
     {
-        private static readonly int BufferSize = 4096;
-
-        public string Create(Stream dataStream, string filename, string fileExtension)
-        {
-            var filePath = FullPath(filename, fileExtension);
-            using (var fileStream = File.OpenWrite(filePath))
-            {
-                using (var data = new BinaryReader(dataStream))
-                {
-                    byte[] bytes;
-                    do
-                    {
-                        bytes = data.ReadBytes(BufferSize);
-                        fileStream.Write(bytes, 0, bytes.Length);
-                    } while (bytes.Length >= BufferSize);
-                }
-            }
-
-            return filePath;
-        }
 
         public async Task<string> CreateAsync(Stream dataStream, string filename, string fileExtension)
         {
-            var filePath = FullPath(filename, fileExtension);
+            var filePath = FullPath(fileExtension);
             
-            using (var stream = System.IO.File.Create(filePath))
+            await using (var stream = System.IO.File.Create(filePath))
             {
                 await dataStream.CopyToAsync(stream);
                 
             }
-            /*await Task.Run(() =>
-            {
-                using (var fileStream = File.OpenWrite(filePath))
-                {
-                    using (var data = new BinaryReader(dataStream))
-                    {
-                        byte[] bytes;
-                        do
-                        {
-                            bytes = data.ReadBytes(BufferSize);
-                            fileStream.Write(bytes, 0, bytes.Length);
-                        } while (bytes.Length >= BufferSize);
-                    }
-                }
-            });*/
-
             return filePath;
         }
 
@@ -72,8 +40,12 @@ namespace DAL.Repositories
         {
             File.Delete(filepath);
         }
-
-        private string FullPath(string filename, string fileExtension)
+/// <summary>
+/// This method creates an url, where file will be saved.
+/// </summary>
+/// <param name="fileExtension">extension of uploaded file</param>
+/// <returns>A string</returns>
+        private string FullPath(string fileExtension)
         {
             var normalizedFileName = Guid.NewGuid().ToString();
             var fullName = string.Concat(normalizedFileName, fileExtension);
@@ -83,7 +55,7 @@ namespace DAL.Repositories
 //Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
 //AppDomain.CurrentDomain.BaseDirectory
 //"C:\\Prg"
-            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            var dirInfo = new DirectoryInfo(path);
             if (!dirInfo.Exists)
             {
                 dirInfo.Create();
@@ -93,18 +65,5 @@ namespace DAL.Repositories
                 path,
                 fullName);
         }
-        
-
-        /*private string GetAppropriateFileName(string filename)
-        {
-            var filenameChars =
-                filename
-                    .Trim()
-                    .Replace(' ', '-')
-                    .ToLowerInvariant()
-                    .ToArray();
-
-            return new string(filenameChars);
-        }*/
     }
 }

@@ -7,15 +7,15 @@ namespace DAL.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
-        IQueryable<TEntity> GetAll();
+      
         Task<IEnumerable<TEntity>> GetAllAsync();
-        TEntity GetById(int id);
+       
         Task<TEntity> GetByIdAsync(int id);
-        void Create(TEntity entity);
+      
         Task<TEntity> CreateAsync(TEntity entity);
-        void Update(TEntity entity);
+      
         Task<TEntity> UpdateAsync(TEntity entity);
-        void Delete(int id);
+      
         Task DeleteByIdAsync(int id);
     }
 }

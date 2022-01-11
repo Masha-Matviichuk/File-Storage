@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Auth;
+using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models.Account;
@@ -15,22 +16,16 @@ namespace BLL.Services
     {
         private readonly UserManager<UserProfile> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
         public RoleService(UserManager<UserProfile> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         
         
-        public async Task AssignUserToRoles(AssignUserToRoles assignUserToRoles)
+        public async Task AssignUserToRoles(AssignUserToRolesDto assignUserToRoles)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.UserName == assignUserToRoles.Email);
             var roles = _roleManager.Roles.ToList().Where(r => assignUserToRoles.Roles.Contains(r.Name, StringComparer.OrdinalIgnoreCase))
@@ -71,8 +66,6 @@ namespace BLL.Services
 
         public async Task<List<string>> GetRole(string userEmail)
         {
-            /*var users = await _unitOfWork.UserRepository.GetAllAsync();
-            var email = users.FirstOrDefault(u => u.Id == id).Email;*/
             var user = _userManager.Users.FirstOrDefault(u=>u.UserName==userEmail);
             var roles = await _userManager.GetRolesAsync(user);
             return roles.ToList();

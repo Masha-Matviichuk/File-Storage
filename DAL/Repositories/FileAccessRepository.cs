@@ -16,7 +16,11 @@ namespace DAL.Repositories
             _context = context;
         }
         
-        public async Task<IEnumerable<Access>> GetAccesses()
+        /// <summary>
+        /// This method returns all access types, which database contains
+        /// </summary>
+        /// <returns>IEnumerable<Access></returns>
+        public async Task<IEnumerable<Access>> GetAll()
         {
             return await _context.Accesses.ToListAsync();
         }

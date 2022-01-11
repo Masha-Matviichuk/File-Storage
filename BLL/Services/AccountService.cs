@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Auth;
+using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
@@ -17,23 +18,19 @@ namespace BLL.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<UserProfile> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public AccountService(UserManager<UserProfile> userManager,
-            RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-        //I think better add dto to SignUp
-        public async Task SignUp(SignUp data)
+        
+        public async Task SignUp(SignUpDto data)
         {
             var userInfo = _mapper.Map<UserProfile>(data);
             var user = _mapper.Map<User>(data);
@@ -49,7 +46,7 @@ namespace BLL.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<UserProfile> LogIn(LogIn data)
+        public async Task<UserProfile> LogIn(LogInDto data)
         {
             var user = _userManager.Users.SingleOrDefault(u => u.UserName == data.Email);
             if (user is null) throw new System.Exception($"User not found: '{data.Email}'.");

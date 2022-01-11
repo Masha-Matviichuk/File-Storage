@@ -17,30 +17,14 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public IQueryable<User> GetAll()
-        {
-            return _context.Users;
-        }
-
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
 
-        public User GetById(int id)
-        {
-            return _context.Users.Find(id);
-        }
-
         public async Task<User> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
-        }
-
-        public void Create(User entity)
-        {
-            _context.Users.Add(entity);
-            _context.SaveChanges();
         }
 
         public async Task<User> CreateAsync(User entity)
@@ -50,25 +34,11 @@ namespace DAL.Repositories
            return user.Entity;
         }
 
-        public void Update(User entity)
-        {
-            _context.Users.Attach(entity);
-            _context.SaveChanges();
-        }
-
         public async Task<User> UpdateAsync(User entity)
         {
              var newUser =_context.Users.Attach(entity);
              await _context.SaveChangesAsync();
              return newUser.Entity;
-        }
-
-        public void Delete(int id)
-        {
-            var entity= _context.Users.Find(id);
-            if (entity == null) return;
-            _context.Users.Remove(entity);
-            _context.SaveChanges();
         }
 
         public async Task DeleteByIdAsync(int id)

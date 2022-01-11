@@ -6,7 +6,7 @@ namespace PL.Models.Account
     {
         [Required]
         public string Email { get; set; }
-        [Required, MinLength(1)]
+        [Required]
         public string[] Roles { get; set; }
     }
 }
