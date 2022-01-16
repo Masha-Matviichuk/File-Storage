@@ -9,22 +9,11 @@
 <div class="serch-area" *ngIf="role==false">
 <div class="input-group mb-3">
   <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="button-addon2" 
-  #SearchInfo="ngModel" [ngModel]="searchString" (keyup.enter)="onSearchForUser(SearchInfo.value)">
+  #SearchInfo="ngModel" [ngModel]="searchString" (keyup.enter)="onSearch(SearchInfo.value)">
   <button class="btn btn-outline-secondary" type="button" id="button-addon2"   
-  (click)="onSearchForUser(SearchInfo.value)">Find</button>
+  (click)="onSearch(SearchInfo.value)">Find</button>
 </div>
 </div>
-
-<div class="serch-area" *ngIf="role==true">
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="button-addon2" 
-    #SearchInfo="ngModel" [ngModel]="searchString" (keyup.enter)="onSearchForAdmin(SearchInfo.value)">
-    <button class="btn btn-outline-secondary" type="button" id="button-addon2"   
-    (click)="onSearchForAdmin(SearchInfo.value)">Find</button>
-  </div>
-  </div>
-
-
 
  <div class="my-3 p-3 bg-body rounded shadow-sm" *ngIf="role == false">
   <div class="upload-button">
@@ -37,7 +26,7 @@
 </div>
     <h6 class="border-bottom pb-2 mb-0">My files</h6>
   
-    <div class="d-flex text-muted pt-3" *ngFor="let file of files">
+    <div class="d-flex text-muted pt-3" *ngFor="let file of allFiles">
       <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" 
       xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" 
       preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -78,7 +67,6 @@
               <strong class="text-gray-dark">{{file.title}}</strong>
               <div>
               <a routerLink="/files/{{file.id}}">Info</a>
-              <a routerLink="/editFile/{{file.id}}">Edit</a>
               <a routerLink="/" (click)="onDeleteClick(file.id)">Delete</a>
               <a routerLink="/files" (click)="onDownloadClick(file.id, file.title)">Download</a>
             </div>

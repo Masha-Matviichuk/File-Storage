@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
-import { catchError } from 'rxjs';
 import { FileInfo } from 'src/app/models/file-info';
 import { CommonService } from 'src/app/services/common.service';
 import { FileService } from 'src/app/services/file.service';
@@ -20,8 +19,7 @@ export class GuestDownloadComponent implements OnInit {
 
   constructor(private _fileService: FileService, 
               private route: ActivatedRoute,
-              private _commonService: CommonService,
-              private router: Router) { }
+              private _commonService: CommonService) { }
 
   ngOnInit(){
     this.getFileInfo();
@@ -43,8 +41,6 @@ export class GuestDownloadComponent implements OnInit {
     (err: HttpErrorResponse)=>{
       this.err = true;
     })
-    //this.router.navigate(['/'])
-     // alert('This data is private!');
     }
     
 
@@ -52,5 +48,4 @@ onDownloadClick() {
   this._fileService.DownloadFile(this.file.id)
   .subscribe(blobData => { saveAs(blobData, this.file.title)});
 }
-
 }

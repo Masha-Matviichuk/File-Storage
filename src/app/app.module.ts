@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -14,11 +13,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GuestDownloadComponent } from './components/guest-download/guest-download.component';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { UsersComponent } from './components/admin/users/users.component';
 import { AssignUserToRolesComponent } from './components/admin/assign-user-to-roles/assign-user-to-roles.component';
 import { UserInfoComponent } from './components/admin/user-info/user-info.component';
 import { UserBlockComponent } from './components/admin/user-block/user-block.component';
+import { MainPageComponent } from './components/main-page/main-page.component';
+
 
 @NgModule({
   declarations: [
@@ -31,11 +31,11 @@ import { UserBlockComponent } from './components/admin/user-block/user-block.com
     EditFileComponent,
     UploadFileComponent,
     GuestDownloadComponent,
-    ErrorPageComponent,
     UsersComponent,
     AssignUserToRolesComponent,
     UserInfoComponent,
-    UserBlockComponent
+    UserBlockComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,7 @@ import { UserBlockComponent } from './components/admin/user-block/user-block.com
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: '', pathMatch: 'full'},
+      { path: '', redirectTo: 'main', pathMatch: 'full'},
       { path:'files', component: FilesComponent},
       { path: 'files/:id', component: FileInfoComponent },
       { path: 'uploadFile', component: UploadFileComponent },
@@ -54,8 +54,8 @@ import { UserBlockComponent } from './components/admin/user-block/user-block.com
       { path: 'users', component: UsersComponent },
       { path: 'getRoles', component: AssignUserToRolesComponent },
       { path: 'users/:id', component: UserInfoComponent },
-      { path: 'block', component: UserBlockComponent }
-
+      { path: 'block', component: UserBlockComponent },
+      { path: 'main', component: MainPageComponent }
     ])
   ],
   providers: [],

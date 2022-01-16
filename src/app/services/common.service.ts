@@ -38,7 +38,6 @@ export class CommonService {
   }
 
   getRoles(): Observable<Role[]> {
-
     const url = `${this.rootUrl}/Common/getRoles`;
     return this._http.get<Role[]>(url);
   }

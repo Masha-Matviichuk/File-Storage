@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http'
 import { map, Observable } from 'rxjs';
 import { FileInfo } from '../models/file-info';
-import { Access } from '../models/access';
 
 
 
@@ -15,14 +14,6 @@ export class FileService {
 
   constructor(private _http : HttpClient) { }
 
-  getFiles(): Observable<FileInfo[]> {
-    var header = new HttpHeaders()
-      .set("Authorization", `Bearer ${localStorage.getItem("userToken")}`);
-
-      
-    const url = `${this.rootUrl}/Files/userFiles`;
-    return this._http.get<FileInfo[]>(url, { headers : header});
-  }
 
   getAllFiles(): Observable<FileInfo[]> {
     var header = new HttpHeaders()

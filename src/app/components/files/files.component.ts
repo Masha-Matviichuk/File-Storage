@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from '../../services/file.service';
 import{FileInfo} from '../../models/file-info';
-import { FileInfoComponent } from '../file-info/file-info.component';
 import { Router } from '@angular/router';
 import { saveAs } from 'file-saver'
 import { AuthService } from 'src/app/services/auth.service';
@@ -15,7 +14,6 @@ import { CommonService } from 'src/app/services/common.service';
 })
 export class FilesComponent implements OnInit {
 
-   files: FileInfo[];
    searchString: string;
    selectedFile: FileInfo;
    allFiles: FileInfo[];
@@ -29,30 +27,16 @@ export class FilesComponent implements OnInit {
 
   ngOnInit() {
     this.userIsAdmin();
-    
-      this._fileService.getFiles().subscribe(files => this.files = files);
       this._fileService.getAllFiles().subscribe(allfiles => this.allFiles = allfiles);
-        
-     
     }
   
 
-  onSearchForUser(keyword: string){
-    if(keyword != null && keyword != ""){
-      this._fileService.findByKeyword(keyword).subscribe(files =>this.files = files)
-    }else{
-      this._fileService.getFiles().subscribe(files => this.files = files);
-    }
-
-  }
-
-  onSearchForAdmin(keyword: string){
+  onSearch(keyword: string){
     if(keyword != null && keyword != ""){
       this._fileService.findByKeyword(keyword).subscribe(files =>this.allFiles = files)
     }else{
       this._fileService.getAllFiles().subscribe(files => this.allFiles = files);
     }
-
   }
 
   onDeleteClick(id: number) {
@@ -67,7 +51,6 @@ export class FilesComponent implements OnInit {
           this.err=err.status;
         }
     );
-    this.router.navigate(["/files"]);
   }
 
   onDownloadClick(id: number, title: string) {
@@ -79,10 +62,7 @@ export class FilesComponent implements OnInit {
   }
 
   userIsAdmin() {
-   
       this._commonService.GetUserRoles().subscribe(role => this.role=role.some(x => x === "admin"));
-    console.log(this.role)
-  
   }
 
   logout() {

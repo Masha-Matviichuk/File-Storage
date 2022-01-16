@@ -34,10 +34,8 @@ export class EditFileComponent implements OnInit {
 
   ngOnInit() {
      this.id = +this.route.snapshot.paramMap.get('id')!;
-    this.getFileInfo()
-    console.log(this.file.title)
-    //this.resetForm()
-    this.getAccessType()
+    this.getFileInfo();
+    this.getAccessType();
    
   }
 
@@ -54,20 +52,10 @@ export class EditFileComponent implements OnInit {
     this.fileToEdit = file[0];
   }
 
- /* resetForm(form?: NgForm){
-    if(form != null){
-      form.reset();
-    }
-    this.title = form.ti;
-    this.description = form?.value;
-    this.selectedAccessType = form;
-  }*/
-
   onSubmit(form: NgForm): void {
-    //const id = +this.route.snapshot.paramMap.get('id')!;
       this._fileService.EditFile(this.id, this.title, this.description, this.selectedAccessType, this.fileToEdit)
       .subscribe(() => {
-        this.router.navigate(['/files/${this.id}']);
+        this.router.navigate(['/files/'+this.id]);
       }, 
       (err: HttpErrorResponse)=>{
         this.err=err.status;

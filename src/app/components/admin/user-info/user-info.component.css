@@ -1,3 +1,34 @@
 .block{
     color: red;
 }
+
+body{
+    display: flex;
+    justify-content: center;
+}
+
+.info-container{
+    width: 500px;
+}
+
+.user-name{
+    display: flex;
+    justify-content: center;
+}
+
+#email{
+    display: flex;
+    justify-content: center;
+    flex-direction: column
+}
+
+.user-id{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+
+}
+
+.mobile-number-info{
+    padding-top: 20px;
+}

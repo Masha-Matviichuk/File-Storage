@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { FileInfo } from 'src/app/models/file-info';
@@ -11,8 +11,6 @@ import { FileService } from 'src/app/services/file.service';
   styleUrls: ['./file-info.component.css']
 })
 export class FileInfoComponent implements OnInit {
-
-  //@Input()
 
   file!: FileInfo;
   

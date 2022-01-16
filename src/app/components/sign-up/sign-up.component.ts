@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   err: boolean;
 
 
-  constructor(private authService: AuthService,
+  constructor(private _authService: AuthService,
     private router: Router) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.authService.RegisterUser(form.value)
+    this._authService.RegisterUser(form.value)
     .subscribe((data: any) => {
       
         this.resetForm(form);
@@ -45,7 +45,5 @@ export class SignUpComponent implements OnInit {
     (err: HttpErrorResponse)=>{
       this.err = true;
     });
-    
   }
-
 }

@@ -2,8 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserInfo } from 'src/app/models/user-info';
-
 import { UserLogin } from 'src/app/models/user-signIn';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -15,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SignInComponent implements OnInit {
   user: UserLogin;
   err: boolean;
-  //token: any;
+
 
 
   constructor( private authService: AuthService,

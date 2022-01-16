@@ -30,14 +30,13 @@ export class UsersComponent implements OnInit {
       this.users = [];
       this._adminService.findUser(+id).subscribe(user =>
         this.users.push(user))
-      console.log(this.users)
     }else{
       this._adminService.getUsers().subscribe(users =>this.users=users);
     }
   }
 
   onDeleteClick(id: number) {
-    var confirmed = confirm("Are you sure to delete this user?");
+    var confirmed = confirm("Are you sure that you want to delete this user?");
     if(!confirmed) return;
 
     this._adminService.DeleteUser(id)
@@ -46,7 +45,4 @@ export class UsersComponent implements OnInit {
         this.router.navigate(["/users"]);}
     );
   }
-
-  
-
 }

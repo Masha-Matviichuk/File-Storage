@@ -33,4 +33,14 @@
 #block-message{
     margin-top: 20px;
 }
+ 
+.form-edit{
+    width: 600px;
+}
 
+.text-center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Access } from 'src/app/models/access';
 import { CommonService } from 'src/app/services/common.service';
 
@@ -13,7 +13,6 @@ import { FileService } from 'src/app/services/file.service';
   styleUrls: ['./upload-file.component.css']
 })
 export class UploadFileComponent implements OnInit {
-  //form: FormGroup;
   accessTypes: Access[];
   selectedAccessType: string ='';
   fileToUpload: File;
@@ -21,8 +20,6 @@ export class UploadFileComponent implements OnInit {
   description: string;
   err: number;
   
-  
-
   constructor(private _fileService: FileService,
     private _commonService: CommonService,
     private router: Router) {
@@ -32,14 +29,12 @@ export class UploadFileComponent implements OnInit {
     this.getAccessType();
   }
 
-
   getAccessType(){
     this._commonService.getFilesAccess().subscribe(accessTypes => this.accessTypes = accessTypes);
   }
 
   chooseAccessType(event: any){
     this.selectedAccessType = event.target.id;
-    console.log(this.selectedAccessType);
   }
 
   handleFileInput(file: FileList) {

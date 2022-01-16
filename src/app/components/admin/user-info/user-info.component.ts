@@ -33,6 +33,5 @@ export class UserInfoComponent implements OnInit {
       roles: user.roles,
       isBanned: user.isBanned
     });
-    
 }
 }

@@ -32,7 +32,7 @@ export class AdminService {
   }
   
   DeleteUser(id: number) {
-    const url = `${this.rootUrl}/Admin/delete/${id}`;
+    const url = `${this.rootUrl}/Admin/users/delete/${id}`;
     var header = new HttpHeaders()
     .set("Authorization", `Bearer ${localStorage.getItem("userToken")}`);
   
@@ -47,7 +47,6 @@ export class AdminService {
         "email": email,
         "roles": [role]
       };
-      //console.log(body);
       return this._http.post(url, body, {headers: header});
   }
   
@@ -65,5 +64,4 @@ export class AdminService {
    const body = {"days": days}
     return this._http.put(url, body, { headers : header});
   }
-
 }

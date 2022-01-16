@@ -1,23 +1,29 @@
 
-
+<body>
+  <div class="info-container">
 <div clss="file-info-container">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" >
         <div class="col p-4 d-flex flex-column position-static">
             <div *ngFor="let role of user.roles">
           <strong class="d-inline-block mb-2 text-primary">{{role}}</strong>
           </div>
-          <h3 class="mb-0">{{user.firstName+' '+user.lastName}}</h3>
+          <div class="user-name">
+          <h3 class="mb-0">{{user.firstName+' '+user.lastName}}</h3></div>
+         <div class="user-id">
           <div class="mb-1 text-muted">ID: {{user.id}}</div>
           <span class="block" *ngIf="user.isBanned==true">In block</span>
-          
-    <div class="input-group mb-3">
+        </div>
+    <div id="email" class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon3">{{user.email}}</span>
       </div>
-    </div>
+    <div class="mobile-number-info">
     <p class="card-text mb-auto">Mobile number:</p>
           <p class="card-text mb-auto">{{'+380'+user.phoneNumber}}</p>
-          
+          </div>
+    </div>
         </div>
       </div>
     </div>
+  </div>
+</body>

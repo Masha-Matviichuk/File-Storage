@@ -29,3 +29,12 @@ a{
 #admin-panel{
     margin-bottom: 20px;
 }
+
+
+
+#files-block{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}

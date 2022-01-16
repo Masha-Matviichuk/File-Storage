@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
   userIsAdmin() {
     if (this.userAuthorized()) {
       this._commonService.GetUserRoles().subscribe(role => this.role=role.some(x => x === "admin"));
-    console.log(this.role)
     }
   }
 }

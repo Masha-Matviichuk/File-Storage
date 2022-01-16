@@ -1,8 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-import { Observable } from 'rxjs';
-
 import { UserInfo } from '../models/user-info';
 import { UserLogin } from '../models/user-signIn';
 import { UserSignUp } from '../models/user-signUp';
@@ -24,13 +21,6 @@ export class AuthService {
 
   RemoveLocalUserData() : void {
     localStorage.removeItem("userToken");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userEmail");
-  }
-
-  SetLocalUserData(userInfo: UserInfo) {
-    localStorage.setItem("userId", userInfo.id.toString());
-    localStorage.setItem("userEmail", userInfo.email);
   }
 
 
@@ -44,7 +34,6 @@ export class AuthService {
       Password: user.Password,
       PasswordConfirm: user.PasswordConfirm
     };
-    //console.log(body);
     return this.http.post(url, body);
   }
 
