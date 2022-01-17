@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
 using DAL.Interfaces;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace BLL.Services
 {

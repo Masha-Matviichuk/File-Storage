@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
+﻿
 using System.Threading.Tasks;
-using Auth;
 using Auth.Entities;
 using BLL.Models.Account;
-using DAL.Entities;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace BLL.Interfaces
 {
@@ -13,6 +11,6 @@ namespace BLL.Interfaces
         Task SignUp(SignUpDto data);
         Task<UserProfile> LogIn(LogInDto data);
         Task DeleteAccount(int id);
-       
+
     }
 }

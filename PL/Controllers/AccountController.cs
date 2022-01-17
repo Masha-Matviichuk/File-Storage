@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models.Account;
-using DAL.Entities;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using PL.Helpers;
 using PL.Models.Account;
 
@@ -65,16 +60,5 @@ namespace PL.Controllers
             var accessToken = JwtHelper.GenerateJwt(user, roles, _optionsSnapshot.Value);
             return Ok(accessToken) ;
         }
-        
-        /*[HttpDelete("delete")]
-        public async Task<IActionResult> DeleteAccount()
-        {
-            var u = User.Identity.IsAuthenticated;
-            Console.WriteLine(u);
-            var user = User.Identity.Name;
-            return Ok(await _roleService.GetRole(user));
-        }  */
-        
-        
     }
 }

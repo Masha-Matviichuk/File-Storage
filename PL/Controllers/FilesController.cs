@@ -1,27 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+﻿
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Auth;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using BLL.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Options;
-using Microsoft.Net.Http.Headers;
 using PL.Helpers;
 using PL.Models;
-using PL.Models.Account;
 
 namespace PL.Controllers
 {
@@ -36,36 +24,25 @@ namespace PL.Controllers
        
 
 
-        public FilesController(IMapper mapper, IFileService filetService, IUserService userService)
+        public FilesController(IMapper mapper, IFileService fileService, IUserService userService)
         {
             _mapper = mapper;
-            _fileService = filetService;
+            _fileService = fileService;
             _userService = userService;
         }
-        
-        // GET api/Files
-        [Authorize (Roles = "admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllFiles()
-        {
-            var files = await _fileService.GetAllAsync();
 
-            return Ok(files);
-        }
-        
         // GET api/Files/5
-        [Authorize (Roles = "admin, user")]
+        //[Authorize (Roles = "admin, user")]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetFileById(int id)
         {
            
             var user = User.Identity?.Name;
-             if (user == null) throw new NullReferenceException(nameof(user));
 
             var file = await _fileService.GetByIdAsync(id, user);
             if (file.Id == 0)
             {
-                return BadRequest();
+                return Forbid();
             }
             var fileModel = _mapper.Map<FileInfoModel>(file);
 
@@ -86,7 +63,7 @@ namespace PL.Controllers
                 return BadRequest();
             }
             
-            if (await _userService.CheckBan(userEmail, DateTime.Now))
+            if (await _userService.CheckBan(userEmail))
             {
                 return Forbid();
             }
@@ -104,8 +81,8 @@ namespace PL.Controllers
         {
             
             var user = User.Identity?.Name;
-            if (user == null) throw new NullReferenceException(nameof(user));
-                if (await _userService.CheckBan(user, DateTime.Now))
+            if (user == null) return NotFound();
+                if (await _userService.CheckBan(user))
             {
                 return Forbid();
             }
@@ -127,12 +104,7 @@ namespace PL.Controllers
 
             var user = User.Identity?.Name;
             
-            if (user==null)
-            {
-                return BadRequest();
-            }
-            
-            if (await _userService.CheckBan(user, DateTime.Now))
+            if (await _userService.CheckBan(user))
             {
                 return Forbid();
             }
@@ -166,35 +138,17 @@ namespace PL.Controllers
                 return BadRequest();
             }
             
-            if (await _userService.CheckBan(user, DateTime.Now))
+            if (await _userService.CheckBan(user))
             {
                 return Forbid();
             }
             
-                var file = uploadedFile.OpenReadStream();
-
-
-                /*var oldFile = await _fileService.GetByIdAsync(id, User.Identity.Name);
-                if (oldFile == null) return NotFound();
+            var file = uploadedFile.OpenReadStream();
                 
-                var provider = new FileExtensionContentTypeProvider();
-                
-                if (!provider.TryGetContentType(file.Url, out var contentType))
-                {
-                    contentType = "application/octet-stream";
-                }
-                
-                var olddata = await _fileService.ReadFileAsync(oldFile);
-                var oldFileS = new FileStream(oldFile.Url, FileAccess.Read);*/
-
             var fileInfo = _mapper.Map<FileDto>(model);
             fileInfo.Id = id;
             fileInfo.Extension = Path.GetExtension(uploadedFile.FileName);
-            //fileInfo.Title = uploadedFile.FileName;
-            /*var result = await Request.ReadFormAsync();
-            var file = result.Files[0].OpenReadStream();*/
-            
-            
+
             var data = await _fileService.UpdateAsync(file, fileInfo);
 
             return Ok(data);
@@ -213,7 +167,7 @@ namespace PL.Controllers
                 return BadRequest();
             }
             
-            if (await _userService.CheckBan(user, DateTime.Now))
+            if (await _userService.CheckBan(user))
             {
                 return Forbid();
             }
@@ -221,9 +175,9 @@ namespace PL.Controllers
             return Ok();
         }
 
-        // GET api/Files/users/4/files
+        // GET api/Files
         [Authorize(Roles = "user, admin")]
-        [HttpGet("userFiles")]
+        [HttpGet]
         public async Task<IActionResult> GetUserFiles()
         {
             var user = User.Identity?.Name;
@@ -231,7 +185,7 @@ namespace PL.Controllers
             {
                 return BadRequest();
             }
-            var files = await _fileService.GetAllUsersFiles(user);
+            var files = await _fileService.GetAllFilesAsync(user);
 
             return Ok(files);
         }

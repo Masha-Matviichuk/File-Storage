@@ -1,17 +1,16 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using BLL.Models;
-using DAL.Entities;
+
 
 namespace BLL.Interfaces
 {
-    public interface IUserService : ICrud<UserInfoDto>
+    public interface IUserService
     {
-        Task UpdateAsync(UserInfoDto model);
+        Task<IEnumerable<UserInfoDto>> GetAllAsync();
         Task<UserInfoDto> GetByIdAsync(int id);
-        Task<bool> CheckBan(string userEmail, DateTime presentTime);
+        Task<bool> CheckBan(string userEmail);
         Task UserBan(int id, int days);
     }
 }

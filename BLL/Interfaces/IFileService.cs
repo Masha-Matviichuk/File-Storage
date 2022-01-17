@@ -6,7 +6,7 @@ using File = DAL.Entities.File;
 
 namespace BLL.Interfaces
 {
-    public interface IFileService:ICrud<FileDto>
+    public interface IFileService
     {
         Task<File> AddAsync(Stream fileStream,  FileDto model);
         Task<File> UpdateAsync(Stream fileStream,  FileDto model);
@@ -14,7 +14,7 @@ namespace BLL.Interfaces
         Task<byte[]> ReadFileAsync(FileDto model);
         Task<IEnumerable<FileDto>> GetByKeyword(string keyword,  string userEmail);
        
-        Task<FileDto> GetByIdAsync(int id, string user);
-        Task<IEnumerable<FileDto>> GetAllUsersFiles(string user);
+        Task<FileDto> GetByIdAsync(int id, string userEmail);
+        Task<IEnumerable<FileDto>> GetAllFilesAsync(string userEmail);
     }
 }

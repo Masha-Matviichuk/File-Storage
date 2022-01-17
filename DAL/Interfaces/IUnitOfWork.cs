@@ -1,6 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DAL.Interfaces
 {

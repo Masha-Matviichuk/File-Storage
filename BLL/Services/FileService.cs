@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Auth;
 using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +27,14 @@ namespace BLL.Services
             _autoMapper = autoMapper;
             _userManager = userManager;
         }
-        public async Task<IEnumerable<FileDto>> GetAllAsync()
-        {
-            var entities = await _unitOfWork.FileRepository.GetAllAsync();
-            return _autoMapper.Map<IEnumerable<FileDto>>(entities);
-        }
 
+        /// <summary>
+        /// This method returns info about file by it`s id. Admin can always get info about every file, it`s not depends on access type of this file. User also can sees info about all his files. But if user wanna get info about file of another user and this file is private, then he can`t get access.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<FileDto> GetByIdAsync(int id, string email)
         {
             var entity = await _unitOfWork.FileRepository.GetByIdAsync(id);
@@ -119,6 +118,13 @@ namespace BLL.Services
             return await _unitOfWork.FileStorageRepository.ReadAsync(file.Url);
         }
 
+        /// <summary>
+        /// This method searches all files, where title or description contains keyword.
+        /// </summary>
+        /// <param name="keyword">A string</param>
+        /// <param name="userEmail">A string</param>
+        /// <returns>IEnumerable of FileDto</returns>
+        /// <exception cref="NullReferenceException"></exception>
         public async  Task<IEnumerable<FileDto>> GetByKeyword(string keyword, string userEmail)
         {
             List<File> list;
@@ -143,14 +149,29 @@ namespace BLL.Services
             return _autoMapper.Map<IEnumerable<FileDto>>(list);
         }
         
-        public async Task<IEnumerable<FileDto>> GetAllUsersFiles(string userEmail)
+        /// <summary>
+        /// This method returns all files, which user uploaded before for ordinary users. And list of all files in database for admin.
+        /// </summary>
+        /// <param name="userEmail">A string</param>
+        /// <returns>IEnumerable of FileDto </returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public async Task<IEnumerable<FileDto>> GetAllFilesAsync(string userEmail)
         {
-            var files = await _unitOfWork.FileRepository.GetAllAsync();
-            var users = await _unitOfWork.UserRepository.GetAllAsync();
-
-            var userId = users.FirstOrDefault(u => u.Email == userEmail)?.Id;
-            var userFiles = files.Where(f => f.UserId == userId);
-            return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
+            var user = _userManager.Users.FirstOrDefault(u=>u.UserName==userEmail);
+            if (user == null) throw new NullReferenceException();
+            
+            var userId = (await _unitOfWork.UserRepository.GetAllAsync())
+                .FirstOrDefault(u => u.Email == user.UserName)?.Id;
+            
+            var allFiles = await _unitOfWork.FileRepository.GetAllAsync();
+            var userFiles = allFiles.Where(f => f.UserId == userId).ToList();
+            
+            
+            var roles = (await _userManager.GetRolesAsync(user)).ToList();
+            if ( roles.Contains("admin"))
+               return _autoMapper.Map<IEnumerable<FileDto>>(allFiles);
+            else
+                return _autoMapper.Map<IEnumerable<FileDto>>(userFiles);
         }
     }
 }

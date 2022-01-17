@@ -4,9 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Auth;
 using Auth.Entities;
-using DAL.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace PL.Helpers

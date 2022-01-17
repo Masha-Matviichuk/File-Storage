@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Auth
+namespace Auth.EF
 {
     public class AdministrationDBContext : IdentityDbContext<UserProfile>
     {
@@ -12,10 +12,6 @@ namespace Auth
            
         }
 
-        public AdministrationDBContext()
-        {
-        }
-        
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -27,11 +23,6 @@ namespace Auth
                  new IdentityRole("user"),
                   new IdentityRole("admin")
               });
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //optionsBuilder.UseSqlServer(@"Server=.;Database=AdministrationDB;Trusted_Connection=True;");
         }
     }
 }

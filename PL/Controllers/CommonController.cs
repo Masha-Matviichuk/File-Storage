@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using PL.Helpers;
 using PL.Models;
 using PL.Models.Account;
 

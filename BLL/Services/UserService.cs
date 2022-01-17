@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Auth;
 using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.Models;
-using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,27 +60,20 @@ namespace BLL.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<bool> CheckBan(string userEmail, DateTime presentTime)
+        public async Task<bool> CheckBan(string userEmail)
         {
             var currentUser = (await _unitOfWork.UserRepository.GetAllAsync()).FirstOrDefault(u=>u.Email==userEmail);
             if (currentUser == null) throw new NullReferenceException(nameof(currentUser));
                 
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(currentUser.Id);
-            if (user == null) throw new NullReferenceException(nameof(user));
-            
-           if (user.EndOfBan < presentTime)
-           {
-                user.IsBanned = false;
+            var entity = await _unitOfWork.UserRepository.GetByIdAsync(currentUser.Id);
+            if (entity == null) throw new NullReferenceException(nameof(entity)); 
+            if (entity.EndOfBan < DateTime.Now)
+            {
+                entity.IsBanned = false;
+                await _unitOfWork.UserRepository.UpdateAsync(entity);
                 return false; 
-           } 
-           return true;
-
-        }
-
-        public async Task UpdateAsync(UserInfoDto model)
-        {
-            var entity = _autoMapper.Map<User>(model);
-            await _unitOfWork.UserRepository.UpdateAsync(entity);
+            } 
+            return true;
         }
     }
 }

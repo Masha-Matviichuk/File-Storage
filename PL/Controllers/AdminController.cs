@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Interfaces;
@@ -42,6 +43,8 @@ namespace PL.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetUserById(int id)
         {
+            var userEmail = (await _userService.GetAllAsync()).FirstOrDefault(u=>u.Id==id).Email;
+            await _userService.CheckBan(userEmail);
             var user = await _userService.GetByIdAsync(id);
 
             return Ok(user);
@@ -71,6 +74,13 @@ namespace PL.Controllers
 
             return Ok();
         }
+        
+        [HttpDelete("delete/{id:int}")]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            await _accountService.DeleteAccount(id);
+            return Ok();
+        }  
         
     }
 }

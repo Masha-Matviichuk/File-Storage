@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
-using Auth;
+using Auth.EF;
 using Auth.Entities;
 using BLL.Configuration;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.EF;
-using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DAL.UoW;

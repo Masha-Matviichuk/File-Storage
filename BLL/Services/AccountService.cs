@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Auth;
 using Auth.Entities;
 using AutoMapper;
 using BLL.Interfaces;
-using BLL.Models;
 using BLL.Models.Account;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -59,13 +56,26 @@ namespace BLL.Services
         public async Task DeleteAccount(int id)
         {
             var users = await _unitOfWork.UserRepository.GetAllAsync();
-            var userEmail = users.FirstOrDefault(u => u.Id == id)?.Email;
+            var currentUser = users.FirstOrDefault(u => u.Id == id);
+            if (currentUser==null)
+            {
+                throw new NullReferenceException();
+            }
 
-            if (userEmail == null) throw new NullReferenceException(nameof(userEmail));
+            var email = currentUser.Email;
+            var files = await _unitOfWork.FileRepository.GetAllAsync();
+            var allUserFiles = files.Where(f => f.UserId == id).ToList();
+            
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == userEmail);
+            foreach (var file in allUserFiles)
+            {
+                _unitOfWork.FileStorageRepository.Delete(file.Url);
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == email);
                 await _unitOfWork.UserRepository.DeleteByIdAsync(id);
                 await _userManager.DeleteAsync(user);
+                
                 await _unitOfWork.SaveChangesAsync();
         }
         
