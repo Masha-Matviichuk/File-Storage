@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import * as saveAs from 'file-saver';
 import { FileInfo } from 'src/app/models/file-info';
 import { CommonService } from 'src/app/services/common.service';
@@ -14,7 +14,7 @@ import { FileService } from 'src/app/services/file.service';
 export class GuestDownloadComponent implements OnInit {
 
   file!: FileInfo;
-  err: boolean;
+  err: number;
   
 
   constructor(private _fileService: FileService, 
@@ -23,6 +23,7 @@ export class GuestDownloadComponent implements OnInit {
 
   ngOnInit(){
     this.getFileInfo();
+    
   }
 
   getFileInfo(){
@@ -37,10 +38,11 @@ export class GuestDownloadComponent implements OnInit {
       upload: this._commonService.FormatDate(file.upload),
       size: this._commonService.FormatFileSize(+file.size)
     };
-    this.err = false;},
+    this.err=0;
+    },
     (err: HttpErrorResponse)=>{
-      this.err = true;
-    })
+      this.err = err.status;
+    });
     }
     
 

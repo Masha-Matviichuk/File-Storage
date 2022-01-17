@@ -6,7 +6,7 @@
   </div>
 </nav>
 
-<div class="serch-area" *ngIf="role==false">
+<div class="serch-area">
 <div class="input-group mb-3">
   <input type="text" class="form-control" placeholder="Search..." aria-label="Search..." aria-describedby="button-addon2" 
   #SearchInfo="ngModel" [ngModel]="searchString" (keyup.enter)="onSearch(SearchInfo.value)">

@@ -1,17 +1,20 @@
-
-<div *ngIf="err==false" clss="file-info-container">
+<body>
+  <div class="info-container">
+<div *ngIf="err==0" clss="file-info-container">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" >
         <div class="col p-4 d-flex flex-column position-static" >
           <strong class="d-inline-block mb-2 text-primary">{{file.access}}</strong>
-          <h3 class="mb-0">{{file.title}}</h3>
+          <div class="title"><h3 class="mb-0">{{file.title}}</h3></div>
           <div class="mb-1 text-muted">{{file.size}}</div>
           <p class="card-text mb-auto">{{file.description}}</p>
-          <div class="mb-1 text-muted">{{file.upload}}</div>
+          <div class="upload-date"> <div class="mb-1 text-muted">{{file.upload}}</div></div>
           <button type="button" class="btn btn-primary" (click)="onDownloadClick()">Download</button>
         </div>
       </div>
     </div>
+    </div>
+</body>
 
-    <div *ngIf="err===true" class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div *ngIf="err===403" class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Sorry...</strong> This data is private.
       </div>
