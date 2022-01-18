@@ -23,6 +23,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PL.Configuration;
 using PL.Helpers;
+using Serilog;
 
 namespace PL
 {
@@ -34,16 +35,16 @@ namespace PL
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            //Log.Logger = new LoggerConfiguration()
-            //  .ReadFrom.Configuration(config)
-              //.Enrich.FromLogContext()
-              //.WriteTo.Console()
-              //.MinimumLevel.Information() // Default
-              //.WriteTo.File("logs_.txt",
-              //  rollingInterval: RollingInterval.Minute, // Default - Infinite
-              //  fileSizeLimitBytes: null, // Default - 1 GB
-              //  retainedFileCountLimit: null) // max amount of files in directory
-             // .CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+              .ReadFrom.Configuration(config)
+              .Enrich.FromLogContext()
+              .WriteTo.Console()
+              .MinimumLevel.Information() 
+              .WriteTo.File("logs_.txt",
+                rollingInterval: RollingInterval.Minute,
+                fileSizeLimitBytes: null, 
+                retainedFileCountLimit: null)
+              .CreateLogger();
 
             Configuration = configuration;
         }
@@ -52,7 +53,7 @@ namespace PL
         
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
             services.AddScoped<IFileRepository, FileRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();

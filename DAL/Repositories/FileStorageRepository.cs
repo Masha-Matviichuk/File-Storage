@@ -41,14 +41,14 @@ namespace DAL.Repositories
 /// <summary>
 /// This method creates an url, where file will be saved.
 /// </summary>
-/// <param name="fileExtension">extension of uploaded file</param>
+/// <param name="fileExtension"> string extension of uploaded file</param>
 /// <returns>A string</returns>
         private string FullPath(string fileExtension)
         {
             var normalizedFileName = Guid.NewGuid().ToString();
             var fullName = string.Concat(normalizedFileName, fileExtension);
 
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            var path = Path.Combine("C:\\Prg",
                 "FileStorageAppData");
 //Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
 //AppDomain.CurrentDomain.BaseDirectory

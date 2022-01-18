@@ -71,6 +71,7 @@ namespace BLL.Services
             {
                 entity.IsBanned = false;
                 await _unitOfWork.UserRepository.UpdateAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
                 return false; 
             } 
             return true;

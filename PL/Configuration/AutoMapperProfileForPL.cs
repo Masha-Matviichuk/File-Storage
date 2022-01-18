@@ -16,7 +16,10 @@ namespace PL.Configuration
                 
             CreateMap<UserInfoDto, UserInfoModel>().ReverseMap();
             
-            CreateMap<SignUpDto, SignUpModel>().ReverseMap();
+            CreateMap<SignUpDto, SignUpModel>()
+                .ForMember(f => f.Email, m => m.MapFrom(user=>user.UserName))
+                .ReverseMap();
+                
             
             CreateMap<LogInDto, LogInModel>().ReverseMap();
             
