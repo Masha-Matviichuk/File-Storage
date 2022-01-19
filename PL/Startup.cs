@@ -38,10 +38,9 @@ namespace PL
             Log.Logger = new LoggerConfiguration()
               .ReadFrom.Configuration(config)
               .Enrich.FromLogContext()
-              .WriteTo.Console()
               .MinimumLevel.Information() 
               .WriteTo.File("logs_.txt",
-                rollingInterval: RollingInterval.Minute,
+                rollingInterval: RollingInterval.Day,
                 fileSizeLimitBytes: null, 
                 retainedFileCountLimit: null)
               .CreateLogger();

@@ -106,10 +106,6 @@ namespace PL.Controllers
 
             var user = User.Identity?.Name;
             
-            if (await _userService.CheckBan(user))
-            {
-                return Forbid();
-            }
             var file = await _fileService.GetByIdAsync(id, user);
             if (file == null) return NotFound();
             

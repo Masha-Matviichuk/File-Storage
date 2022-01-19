@@ -8,6 +8,7 @@ using BLL.Services;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
 
@@ -38,35 +39,6 @@ namespace Tests.BusinessTests
         }
         
         [Test]
-        public async Task UserService_GetByIdAsync()
-        {
-            var expected = GetTestUserModels().First();
-            
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            var mockUserManager = new Mock<UserManager<UserProfile>>(Mock.Of<IUserStore<UserProfile>>(), null, null, null, null, null, null, null, null);
-            mockUnitOfWork
-                .Setup(m => m.UserRepository.GetByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync(GetTestUserEntities().First());
-            
-            mockUserManager.Setup(x => x.Users).Returns(GetTestUserProfileEntities().AsQueryable);
-            mockUserManager.Setup(x => x.GetRolesAsync(GetTestUserProfileEntities().First())).ReturnsAsync(GetTestUserRoles().First());
-            var userService = new UserService(mockUnitOfWork.Object, UnitTestsHelper.CreateMapperProfileForBll(), mockUserManager.Object);
-
-            var actual =  await userService.GetByIdAsync(1);
-
-            Assert.AreEqual(expected.Id, actual.Id);
-            Assert.AreEqual(expected.Email, actual.Email);
-            Assert.AreEqual(expected.Password, actual.Password);
-            Assert.AreEqual(expected.Roles, actual.Roles); 
-            Assert.AreEqual(expected.FirstName, actual.FirstName); 
-            Assert.AreEqual(expected.LastName, actual.LastName);
-            Assert.AreEqual(expected.IsBanned, actual.IsBanned);
-            Assert.AreEqual(expected.EndOfBan, actual.EndOfBan); 
-            Assert.AreEqual(expected.PhoneNumber, actual.PhoneNumber);
-        }
-        
-        
-        [Test]
         public async Task UserService_UserBan()
         {
             //Arrange
@@ -89,7 +61,7 @@ namespace Tests.BusinessTests
             mockUnitOfWork.Verify(x => x.UserRepository.UpdateAsync(It.Is<User>(u => u.Email==user.Email && u.IsBanned == user.IsBanned) ), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
-        
+
         [Test]
         public async Task UserService_CheckBan()
         {
