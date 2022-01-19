@@ -33,9 +33,15 @@ export class FilesComponent implements OnInit {
 
   onSearch(keyword: string){
     if(keyword != null && keyword != ""){
-      this._fileService.findByKeyword(keyword).subscribe(files =>this.allFiles = files)
+      this._fileService.findByKeyword(keyword).subscribe(files =>this.allFiles = files,
+        (err: HttpErrorResponse)=>{
+          this.err=err.status;
+        })
     }else{
-      this._fileService.getAllFiles().subscribe(files => this.allFiles = files);
+      this._fileService.getAllFiles().subscribe(files => this.allFiles = files, 
+        (err: HttpErrorResponse)=>{
+          this.err=err.status;
+        });
     }
   }
 
@@ -48,6 +54,7 @@ export class FilesComponent implements OnInit {
       () => {
         this.router.navigate(["/files"]);}, 
         (err: HttpErrorResponse)=>{
+          this.router.navigate(["/files"]);
           this.err=err.status;
         }
     );

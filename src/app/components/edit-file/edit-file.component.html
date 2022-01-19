@@ -3,11 +3,11 @@
     
     <main class="form-edit">
         <h4 class="mb-3">Make changes</h4>
-        <form class="needs-validation" #fileEditForm="ngForm" (ngSubmit)="onSubmit(fileEditForm)">
+        <form class="needs-validation" #fileEditForm="ngForm" (ngSubmit)="onSubmit(Title.value, Description.value)">
             <div class="row g-3" id="form">
               <div class="col-sm-6">
                 <label for="Title" class="form-label">Name</label>
-                <input type="text" class="form-control" id="Title" name="Title" [value]="file.title" #Title="ngModel"
+                <input type="text" class="form-control" id="Title" name="Title" value="{{file.title}}" #Title="ngModel"
                 [(ngModel)]="title">
                 <div class="invalid-input" *ngIf="Title.invalid && Title.touched">
                   Valid name is required.
@@ -16,7 +16,7 @@
       
               <div class="col-sm-6">
                 <label for="Description" class="form-label">Description</label>
-                <textarea type="text" class="form-control" id="Description" name="Description" [value]="file.description"
+                <textarea type="text" class="form-control" id="Description" name="Description" value="{{file.description}}"
                 #Description="ngModel"
                 [(ngModel)]="description"></textarea>
               </div>

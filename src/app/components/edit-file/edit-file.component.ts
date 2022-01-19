@@ -52,8 +52,17 @@ export class EditFileComponent implements OnInit {
     this.fileToEdit = file[0];
   }
 
-  onSubmit(form: NgForm): void {
-      this._fileService.EditFile(this.id, this.title, this.description, this.selectedAccessType, this.fileToEdit)
+  onSubmit(title : string, description: string): void {
+
+   if (title===undefined) {
+     title=this.file.title;
+    }
+
+   if (description==undefined) {
+     description=this.file.description;
+    }
+
+      this._fileService.EditFile(this.id, title, description, this.selectedAccessType, this.fileToEdit)
       .subscribe(() => {
         this.router.navigate(['/files/'+this.id]);
       }, 
