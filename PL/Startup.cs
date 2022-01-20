@@ -7,6 +7,7 @@ using BLL.Configuration;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.EF;
+using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 using DAL.UoW;
@@ -38,7 +39,8 @@ namespace PL
             Log.Logger = new LoggerConfiguration()
               .ReadFrom.Configuration(config)
               .Enrich.FromLogContext()
-              .MinimumLevel.Information() 
+              .MinimumLevel.Information()
+              .MinimumLevel.Error()
               .WriteTo.File("logs_.txt",
                 rollingInterval: RollingInterval.Day,
                 fileSizeLimitBytes: null, 
@@ -54,9 +56,9 @@ namespace PL
         {
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
-            services.AddScoped<IFileRepository, FileRepository>();
+            services.AddScoped<IRepository<DAL.Entities.File>, FileRepository>();
             services.AddScoped<IFileStorageRepository, FileStorageRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IFileAccessRepository, FileAccessRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();

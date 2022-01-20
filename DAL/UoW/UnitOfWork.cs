@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DAL.EF;
+using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 
@@ -8,8 +9,8 @@ namespace DAL.UoW
     public class UnitOfWork : IUnitOfWork
     {
         private readonly FileStorageDBContext _context;
-        private IFileRepository _fileRepository;
-        private IUserRepository _userRepository;
+        private IRepository<File> _fileRepository;
+        private IRepository<User> _userRepository;
         private IFileAccessRepository _fileAccessRepository;
         private IFileStorageRepository _storage;
 
@@ -18,7 +19,7 @@ namespace DAL.UoW
             _context = context;
         }
 
-        public  IFileRepository FileRepository
+        public  IRepository<File> FileRepository
         {
             get
             {
@@ -44,7 +45,7 @@ namespace DAL.UoW
             }
         }
 
-        public IUserRepository UserRepository
+        public IRepository<User> UserRepository
         {
             get
             {

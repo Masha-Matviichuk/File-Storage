@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
-    public class FileRepository : IFileRepository
+    public class FileRepository : IRepository<File>
     {
         private readonly FileStorageDBContext _context;
 
