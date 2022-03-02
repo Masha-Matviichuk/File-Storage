@@ -74,8 +74,7 @@ namespace PL.Controllers
         
         
         // POST api/Files/upload
-        [DisableRequestSizeLimit]
-        //[RequestSizeLimit(200000000)]
+        [RequestSizeLimit(200000000)]
         [Authorize(Roles = "user, admin")]
         [HttpPost("upload")]
         [FileUploadOperation.FileContentType]
@@ -124,8 +123,7 @@ namespace PL.Controllers
         
         
         // PUT api/Files/edit/9
-        [DisableRequestSizeLimit] 
-        //[RequestSizeLimit(200000000)]
+        [RequestSizeLimit(200000000)]
         [Authorize (Roles = "admin, user")]
         [HttpPut("edit/{id:int}")]
         [FileUploadOperation.FileContentType]
